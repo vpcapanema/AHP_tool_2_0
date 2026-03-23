@@ -317,7 +317,7 @@
       "  align-items: center;",
       "  height: 120px;",
       "}",
-      ".ahp-app .ahp-main { padding-top: var(--ahp-shell-header-offset, 84px); }",
+      ".ahp-app .ahp-main { padding-top: var(--ahp-shell-header-offset, calc(var(--govsp-topbar-height, 50px) + var(--csch2-navbar-height, 64px) + 20px)); }",
       "@media (max-width: 992px) {",
       "  .csch2-navbar__toggle { display: inline-flex; }",
       "  .csch2-navbar__menu {",
@@ -603,12 +603,15 @@
     var navbar = document.querySelector(".csch2-navbar-band");
     var topHeight = topBar ? Math.ceil(topBar.getBoundingClientRect().height) : 50;
     var navHeight = navbar ? Math.ceil(navbar.getBoundingClientRect().height) : 64;
+    var totalOffset = topHeight + navHeight + 20;
 
     if (topHeight >= 24) {
       document.documentElement.style.setProperty("--govsp-topbar-height", topHeight + "px");
     }
 
-    document.documentElement.style.setProperty("--ahp-shell-header-offset", navHeight + 20 + "px");
+    document.documentElement.style.setProperty("--csch2-navbar-height", navHeight + "px");
+    document.documentElement.style.setProperty("--navbar-total-offset", totalOffset + "px");
+    document.documentElement.style.setProperty("--ahp-shell-header-offset", totalOffset + "px");
   }
 
   function syncFooterYear() {

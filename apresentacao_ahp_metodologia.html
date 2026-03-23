@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Análise Hierárquica de Processos (AHP) — Metodologia | SIGMA-PLI/SP-2050</title>
+
+  <!-- Fontes PLI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── TOKENS PLI-SP 2050 ── */
+    :root {
+      --pli-deep:         #003b5a;
+      --pli-navy:         #1c3d59;
+      --pli-blue:         #116593;
+      --pli-cyan:         #16539c;
+      --pli-green:        #3ec26e;
+      --pli-green-dark:   #2aa358;
+      --pli-white:        #ffffff;
+      --pli-gray-bg:      #f0f0f1;
+      --pli-gray-light:   #f2f2f2;
+      --pli-text:         #212529;
+      --pli-text-muted:   #444444;
+
+      --pli-gradient-hero: linear-gradient(160deg, #003b5a 0%, #1c3d59 38%, rgba(28,61,89,0.08) 72%, #ffffff 100%);
+      --pli-gradient-btn:  linear-gradient(135deg, #116593 0%, #1c3d59 100%);
+
+      --pli-font-primary:   "Montserrat", Verdana, sans-serif;
+      --pli-font-secondary: "Roboto", Arial, sans-serif;
+
+      --pli-shadow-card:  0 4px 20px rgba(0,0,0,0.12);
+      --pli-shadow-hover: 0 8px 32px rgba(28,61,89,0.25);
+      --pli-radius-md:    8px;
+      --pli-radius-lg:    16px;
+    }
+
+    /* ── RESET MÍNIMO ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--pli-font-secondary);
+      background: var(--pli-gray-bg);
+      color: var(--pli-text);
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    /* ── BARRA TOPO ── */
+    .top-bar {
+      background: var(--pli-deep);
+      color: var(--pli-white);
+      padding: 0.4rem 2rem;
+      font-family: var(--pli-font-primary);
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .top-bar-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--pli-green); flex-shrink: 0; }
+
+    /* ── HERO ── */
+    .hero {
+      background: var(--pli-gradient-hero);
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='1.5' fill='rgba(62,194,110,0.12)'/%3E%3C/svg%3E") repeat;
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block;
+      background: rgba(62,194,110,0.18);
+      border: 1px solid var(--pli-green);
+      color: var(--pli-green);
+      border-radius: 50px;
+      padding: 0.3rem 1.2rem;
+      font-family: var(--pli-font-primary);
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+    }
+    .hero h1 {
+      font-family: var(--pli-font-primary);
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      color: var(--pli-white);
+      line-height: 1.15;
+      max-width: 860px;
+      margin: 0 auto 0.75rem;
+    }
+    .hero h1 em {
+      font-style: normal;
+      color: var(--pli-green);
+    }
+    .hero-subtitle {
+      font-family: var(--pli-font-secondary);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.75);
+      max-width: 680px;
+      margin: 0 auto 2.5rem;
+    }
+    .hero-meta {
+      display: flex;
+      justify-content: center;
+      gap: 2.5rem;
+      flex-wrap: wrap;
+    }
+    .hero-meta-item {
+      text-align: center;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.78rem;
+      font-family: var(--pli-font-primary);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    .hero-meta-item strong {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--pli-white);
+    }
+
+    /* ── NAVEGAÇÃO DE SEÇÕES ── */
+    .section-nav {
+      background: var(--pli-white);
+      border-bottom: 3px solid var(--pli-green);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+    }
+    .section-nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .section-nav a {
+      display: block;
+      padding: 1rem 1.25rem;
+      font-family: var(--pli-font-primary);
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--pli-text-muted);
+      text-decoration: none;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -3px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .section-nav a:hover { color: var(--pli-blue); border-color: var(--pli-blue); }
+    .section-nav a.active { color: var(--pli-deep); border-color: var(--pli-green); }
+
+    /* ── LAYOUT PRINCIPAL ── */
+    .page-wrapper {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem;
+    }
+
+    /* ── SEÇÕES ── */
+    .section {
+      margin-bottom: 5rem;
+      scroll-margin-top: 70px;
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .section-number {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--pli-deep);
+      color: var(--pli-white);
+      font-family: var(--pli-font-primary);
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(0,59,90,0.3);
+    }
+    .section-number.green { background: var(--pli-green-dark); }
+    .section-title-block h2 {
+      font-family: var(--pli-font-primary);
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--pli-deep);
+      margin-bottom: 0.2rem;
+    }
+    .section-title-block p {
+      font-size: 0.875rem;
+      color: var(--pli-text-muted);
+      font-style: italic;
+    }
+    .section-divider {
+      height: 3px;
+      background: linear-gradient(90deg, var(--pli-green) 0%, var(--pli-blue) 60%, transparent 100%);
+      border-radius: 2px;
+      margin-bottom: 2rem;
+    }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--pli-white);
+      border-radius: var(--pli-radius-lg);
+      box-shadow: var(--pli-shadow-card);
+      padding: 2rem 2.25rem;
+      margin-bottom: 1.5rem;
+      border-left: 4px solid transparent;
+      transition: box-shadow 0.3s, transform 0.2s;
+    }
+    .card:hover { box-shadow: var(--pli-shadow-hover); transform: translateY(-2px); }
+    .card.blue  { border-left-color: var(--pli-blue); }
+    .card.green { border-left-color: var(--pli-green); }
+    .card.navy  { border-left-color: var(--pli-navy); }
+    .card.cyan  { border-left-color: var(--pli-cyan); }
+
+    .card h3 {
+      font-family: var(--pli-font-primary);
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--pli-deep);
+      margin-bottom: 0.75rem;
+    }
+    .card p { color: var(--pli-text-muted); line-height: 1.75; margin-bottom: 0.5rem; }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* ── DESTAQUE / QUOTE ── */
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(0,59,90,0.06) 0%, rgba(17,101,147,0.04) 100%);
+      border: 1.5px solid rgba(17,101,147,0.2);
+      border-radius: var(--pli-radius-lg);
+      padding: 1.75rem 2rem;
+      margin: 1.5rem 0;
+      position: relative;
+    }
+    .highlight-box::before {
+      content: '"';
+      position: absolute;
+      top: -0.5rem;
+      left: 1.25rem;
+      font-size: 5rem;
+      line-height: 1;
+      color: var(--pli-green);
+      opacity: 0.35;
+      font-family: Georgia, serif;
+    }
+    .highlight-box p {
+      font-size: 1.05rem;
+      font-style: italic;
+      color: var(--pli-navy);
+      line-height: 1.8;
+    }
+    .highlight-box cite {
+      display: block;
+      margin-top: 0.75rem;
+      font-size: 0.82rem;
+      color: var(--pli-text-muted);
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      display: flex;
+      gap: 1rem;
+      background: rgba(62,194,110,0.08);
+      border: 1px solid rgba(62,194,110,0.3);
+      border-radius: var(--pli-radius-md);
+      padding: 1.25rem 1.5rem;
+      margin: 1.25rem 0;
+    }
+    .info-box-icon { font-size: 1.5rem; flex-shrink: 0; }
+    .info-box p { font-size: 0.9rem; color: var(--pli-text); margin: 0; }
+    .info-box strong { color: var(--pli-green-dark); }
+
+    /* ── GRID 2 COLUNAS ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 740px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* ── GRID 3 COLUNAS ── */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.25rem;
+    }
+    @media (max-width: 900px) { .grid-3 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 560px) { .grid-3 { grid-template-columns: 1fr; } }
+
+    /* ── STEP FLOW ── */
+    .step-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .step-item {
+      display: flex;
+      gap: 1.5rem;
+      position: relative;
+    }
+    .step-item:not(:last-child) .step-line::after {
+      content: "";
+      position: absolute;
+      left: 19px;
+      top: 52px;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--pli-green) 0%, var(--pli-blue) 100%);
+    }
+    .step-line {
+      position: relative;
+      flex-shrink: 0;
+      padding-bottom: 2rem;
+    }
+    .step-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--pli-gradient-btn);
+      color: var(--pli-white);
+      font-family: var(--pli-font-primary);
+      font-size: 0.9rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 3px 10px rgba(17,101,147,0.35);
+    }
+    .step-content {
+      background: var(--pli-white);
+      border-radius: var(--pli-radius-md);
+      box-shadow: var(--pli-shadow-card);
+      padding: 1.5rem 1.75rem;
+      margin-bottom: 2rem;
+      flex: 1;
+      border-left: 3px solid var(--pli-blue);
+    }
+    .step-content h3 {
+      font-family: var(--pli-font-primary);
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--pli-deep);
+      margin-bottom: 0.6rem;
+    }
+    .step-content p { font-size: 0.93rem; color: var(--pli-text-muted); margin-bottom: 0.5rem; }
+
+    /* ── TABELA ── */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: var(--pli-radius-lg);
+      box-shadow: var(--pli-shadow-card);
+      margin: 1.5rem 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+      background: var(--pli-white);
+    }
+    thead tr {
+      background: var(--pli-deep);
+      color: var(--pli-white);
+    }
+    thead th {
+      font-family: var(--pli-font-primary);
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 1rem 1.25rem;
+      text-align: left;
+    }
+    tbody tr { border-bottom: 1px solid #e9edf2; }
+    tbody tr:nth-child(even) { background: rgba(0,59,90,0.025); }
+    tbody tr:hover { background: rgba(17,101,147,0.06); }
+    tbody td {
+      padding: 0.9rem 1.25rem;
+      vertical-align: top;
+      color: var(--pli-text-muted);
+      line-height: 1.5;
+    }
+    .tag {
+      display: inline-block;
+      padding: 0.2rem 0.7rem;
+      border-radius: 50px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      font-family: var(--pli-font-primary);
+    }
+    .tag-pos  { background: rgba(42,163,88,0.12); color: var(--pli-green-dark); }
+    .tag-neg  { background: rgba(192,57,43,0.1);  color: #c0392b; }
+
+    /* ── SCALE TABLE SAATY ── */
+    .scale-row {
+      display: grid;
+      grid-template-columns: 60px 1fr;
+      gap: 0.75rem;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-bottom: 1px solid #e9edf2;
+    }
+    .scale-row:last-child { border-bottom: none; }
+    .scale-value {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--pli-font-primary);
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--pli-white);
+    }
+
+    /* ── FORMULA BOX ── */
+    .formula-box {
+      background: var(--pli-deep);
+      border-radius: var(--pli-radius-md);
+      padding: 1.5rem 2rem;
+      text-align: center;
+      margin: 1.5rem 0;
+    }
+    .formula-box .formula {
+      font-family: "Courier New", monospace;
+      font-size: 1.3rem;
+      color: var(--pli-green);
+      letter-spacing: 0.04em;
+    }
+    .formula-box .formula-label {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.55);
+      margin-top: 0.5rem;
+      font-family: var(--pli-font-secondary);
+    }
+
+    /* ── BADGE PILL ── */
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: rgba(17,101,147,0.1);
+      color: var(--pli-blue);
+      border-radius: 50px;
+      padding: 0.25rem 0.9rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      font-family: var(--pli-font-primary);
+      border: 1px solid rgba(17,101,147,0.2);
+    }
+    .pill.green { background: rgba(62,194,110,0.1); color: var(--pli-green-dark); border-color: rgba(62,194,110,0.25); }
+
+    /* ── CALL TO ACTION ── */
+    .cta-section {
+      background: linear-gradient(135deg, var(--pli-deep) 0%, var(--pli-navy) 100%);
+      border-radius: var(--pli-radius-lg);
+      padding: 3.5rem 2.5rem;
+      text-align: center;
+      color: var(--pli-white);
+      position: relative;
+      overflow: hidden;
+      margin-top: 3rem;
+    }
+    .cta-section::before {
+      content: "";
+      position: absolute;
+      top: -40px; right: -40px;
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: rgba(62,194,110,0.12);
+    }
+    .cta-section h2 {
+      font-family: var(--pli-font-primary);
+      font-size: 1.6rem;
+      font-weight: 800;
+      margin-bottom: 0.75rem;
+    }
+    .cta-section p {
+      color: rgba(255,255,255,0.7);
+      max-width: 600px;
+      margin: 0 auto 2rem;
+    }
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: var(--pli-green);
+      color: var(--pli-white);
+      font-family: var(--pli-font-primary);
+      font-size: 0.9rem;
+      font-weight: 700;
+      padding: 0.85rem 2.2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 20px rgba(62,194,110,0.4);
+      transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+    }
+    .btn-primary:hover {
+      background: #5cd48a;
+      color: var(--pli-white);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 26px rgba(62,194,110,0.5);
+    }
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 2px solid rgba(255,255,255,0.4);
+      color: var(--pli-white);
+      font-family: var(--pli-font-primary);
+      font-size: 0.9rem;
+      font-weight: 600;
+      padding: 0.82rem 2rem;
+      border-radius: 50px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      margin-left: 1rem;
+    }
+    .btn-outline:hover { border-color: var(--pli-green); color: var(--pli-white); background: rgba(62,194,110,0.06); }
+
+    .btn-primary,
+    .btn-primary:visited,
+    .btn-primary:hover,
+    .btn-primary:focus,
+    .btn-primary:active,
+    .btn-outline,
+    .btn-outline:visited,
+    .btn-outline:hover,
+    .btn-outline:focus,
+    .btn-outline:active {
+      color: var(--pli-white) !important;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--pli-deep);
+      color: rgba(255,255,255,0.5);
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.8rem;
+      font-family: var(--pli-font-primary);
+    }
+    footer a { color: var(--pli-green); text-decoration: none; }
+    footer strong { color: rgba(255,255,255,0.85); }
+
+    /* ── UTILS ── */
+    .text-center { text-align: center; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mt-3 { margin-top: 1.5rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    small { font-size: 0.78rem; color: var(--pli-text-muted); }
+    sup { font-size: 0.65em; vertical-align: super; }
+    .ref { color: var(--pli-blue); font-weight: 600; }
+  </style>
+</head>
+<body>
+
+  <!-- BARRA TOPO -->
+  <div class="top-bar">
+    <div class="top-bar-dot"></div>
+    SIGMA · Sistema Integrado de Gestão, Monitoramento e Apoio Técnico ao PLI/SP-2050 &nbsp;·&nbsp; Metodologia AHP
+  </div>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-badge">Análise Multicritério · Metodologia Científica</div>
+    <h1>Análise Hierárquica de Processos<br /><em>AHP — Analytic Hierarchy Process</em></h1>
+    <p class="hero-subtitle">
+      Guia metodológico para estruturação e aplicação da análise multicritério no contexto do
+      Plano de Logística Integrada SP-2050, utilizando a ferramenta SIGMA-AHP.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><strong>T. L. Saaty</strong>criador do método</div>
+      <div class="hero-meta-item"><strong>1–9</strong>escala de intensidade</div>
+      <div class="hero-meta-item"><strong>RC &lt; 0,10</strong>limiar de consistência</div>
+      <div class="hero-meta-item"><strong>6 etapas</strong>fluxo metodológico</div>
+    </div>
+  </header>
+
+  <!-- NAVEGAÇÃO -->
+  <nav class="section-nav">
+    <div class="section-nav-inner">
+      <a href="#intro">Introdução</a>
+      <a href="#passo1">1 · Problema</a>
+      <a href="#passo2">2 · Perguntas</a>
+      <a href="#passo3">3 · Critérios</a>
+      <a href="#passo4">4 · Variáveis</a>
+      <a href="#passo5">5 · Matriz</a>
+      <a href="#passo6">6 · Ferramenta</a>
+    </div>
+  </nav>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <main class="page-wrapper">
+
+    <!-- ════════════════════════════════════════════════════
+         INTRODUÇÃO — O QUE É AHP
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="intro">
+      <div class="section-header">
+        <div class="section-number green">AHP</div>
+        <div class="section-title-block">
+          <h2>Introdução ao Método AHP</h2>
+          <p>Fundamentos teóricos e aplicação na análise de decisão multicritério</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="highlight-box">
+        <p>
+          "A Análise Hierárquica de Processos (<em>Analytic Hierarchy Process</em>) é um método de
+          suporte à decisão que estrutura problemas complexos em uma hierarquia de critérios e
+          alternativas, quantificando preferências subjetivas por meio de comparações pareadas."
+        </p>
+        <cite>— SAATY, Thomas L. <em>The Analytic Hierarchy Process.</em> McGraw-Hill, 1980.</cite>
+      </div>
+
+      <div class="grid-2">
+        <div class="card blue">
+          <h3>Origem e contexto</h3>
+          <p>
+            Desenvolvido pelo matemático <strong>Thomas L. Saaty</strong> na década de 1970, o AHP foi
+            formalizado em 1980 e amplamente adotado em planejamento, políticas públicas, gestão de
+            infraestrutura e logística. O método está enraizado na teoria das matrizes, na
+            psicofísica da comparação e na álgebra linear (<span class="ref">SAATY, 1990</span>;
+            <span class="ref">SAATY, 1991</span>).
+          </p>
+        </div>
+        <div class="card green">
+          <h3>Princípio fundamental</h3>
+          <p>
+            O AHP decompõe a decisão em três níveis hierárquicos: <strong>(1) objetivo</strong>,
+            <strong>(2) critérios</strong> e <strong>(3) alternativas</strong>. Os critérios são
+            comparados par a par por especialistas usando a <em>Escala Fundamental de Saaty</em>,
+            gerando pesos relativos que sintetizam o julgamento coletivo.
+          </p>
+        </div>
+      </div>
+
+      <div class="card navy mt-2">
+        <h3>Escala Fundamental de Saaty (1–9)</h3>
+        <p style="margin-bottom:1.25rem;">A intensidade de importância relativa entre dois critérios é expressa por valores inteiros de 1 a 9, conforme definido por Saaty (1980):</p>
+        <div>
+          <div class="scale-row">
+            <div class="scale-value" style="background:#003b5a;">1</div>
+            <div><strong>Igual importância</strong> — Os dois critérios contribuem igualmente para o objetivo.</div>
+          </div>
+          <div class="scale-row">
+            <div class="scale-value" style="background:#0d5277;">3</div>
+            <div><strong>Importância moderada</strong> — Um critério é levemente mais importante que o outro; a experiência e o julgamento indicam uma preferência moderada.</div>
+          </div>
+          <div class="scale-row">
+            <div class="scale-value" style="background:#116593;">5</div>
+            <div><strong>Importância forte</strong> — Um critério é fortemente mais importante; a preferência é manifestada na prática.</div>
+          </div>
+          <div class="scale-row">
+            <div class="scale-value" style="background:#1c7ea1;">7</div>
+            <div><strong>Importância muito forte</strong> — Dominância muito forte de um critério; evidência prática robusta.</div>
+          </div>
+          <div class="scale-row">
+            <div class="scale-value" style="background:#2aa358;">9</div>
+            <div><strong>Importância extrema</strong> — A evidência favorece fortemente um critério em relação ao outro, ao nível mais alto possível.</div>
+          </div>
+        </div>
+        <p class="mt-2"><small>Valores intermediários pares (2, 4, 6, 8) correspondem a posições entre dois julgamentos consecutivos. Os recíprocos (ex.: 1/3, 1/5) indicam a posição inversa da comparação.</small></p>
+      </div>
+
+      <div class="grid-3 mt-2">
+        <div class="card blue">
+          <h3>Matriz de Comparações Pareadas</h3>
+          <p>Para <em>n</em> critérios, constrói-se uma matriz quadrada <em>n × n</em> em que o elemento a<sub>ij</sub> representa a importância relativa do critério <em>i</em> em relação ao critério <em>j</em>. A matriz é recíproca: a<sub>ji</sub> = 1/a<sub>ij</sub>.</p>
+        </div>
+        <div class="card green">
+          <h3>Vetor de Prioridades (Autovetores)</h3>
+          <p>Os pesos dos critérios são obtidos pelo autovetor principal da matriz de comparação, normalizado de modo que a soma dos pesos seja igual a 1. Cada peso representa a importância relativa do respectivo critério.</p>
+        </div>
+        <div class="card navy">
+          <h3>Razão de Consistência (RC)</h3>
+          <p>A consistência lógica dos julgamentos é avaliada pela Razão de Consistência. Para matrizes aceitáveis, exige-se RC &lt; 0,10. Valores superiores indicam inconsistência e exigem revisão dos julgamentos (<span class="ref">SAATY, 1990</span>).</p>
+        </div>
+      </div>
+
+      <div class="formula-box mt-2">
+        <div class="formula">RC = IC / IR</div>
+        <div class="formula-label">
+          IC = Índice de Consistência &nbsp;|&nbsp; IR = Índice Randômico (tabelado por Saaty) &nbsp;|&nbsp; Critério: RC &lt; 0,10
+        </div>
+      </div>
+
+      <div class="info-box mt-2">
+        <div class="info-box-icon">📌</div>
+        <p>
+          <strong>Contexto SIGMA-PLI:</strong> No âmbito do Plano de Logística Integrada SP-2050,
+          o AHP é utilizado como método de ponderação dos critérios da Análise de Favorabilidade e
+          Diagnóstico (FAD), integrando variáveis territoriais, socioeconômicas e de infraestrutura
+          logística para a construção de índices espacialmente distribuídos.
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         COMO MONTAR A ANÁLISE — VISÃO GERAL
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="como-montar">
+      <div class="section-header">
+        <div class="section-number">→</div>
+        <div class="section-title-block">
+          <h2>Como Montar a Análise Multicritério?</h2>
+          <p>Fluxo metodológico em 6 etapas para estruturação rigorosa de uma análise AHP</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="card blue">
+        <p>
+          A construção de uma análise AHP exige rigor metodológico desde a definição do problema
+          até a aplicação da ferramenta de cálculo. As seis etapas a seguir foram elaboradas para
+          garantir rastreabilidade, transparência e reprodutibilidade científica. Cada etapa é
+          detalhada nas seções subsequentes.
+        </p>
+        <div style="display:flex; flex-wrap:wrap; gap:0.5rem; margin-top:1rem;">
+          <span class="pill">1 · Delimitar o problema</span>
+          <span class="pill">2 · Formular as perguntas</span>
+          <span class="pill">3 · Identificar critérios</span>
+          <span class="pill">4 · Transformar em variáveis</span>
+          <span class="pill">5 · Elaborar a matriz de premissas</span>
+          <span class="pill green">6 · Aplicar a ferramenta AHP</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         PASSO 1 — DELIMITAR O PROBLEMA
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="passo1">
+      <div class="section-header">
+        <div class="section-number">1</div>
+        <div class="section-title-block">
+          <h2>Delimitar o Problema de Estudo</h2>
+          <p>Escopo, objeto e limites da análise</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="card blue">
+        <h3>Por que delimitar?</h3>
+        <p>
+          A delimitação do problema é o alicerce de qualquer análise multicritério. Sem um escopo
+          preciso, critérios irrelevantes são incluídos e critérios fundamentais podem ser omitidos,
+          comprometendo a validade dos pesos resultantes. A etapa é análoga à definição do
+          <em>problema de pesquisa</em> em metodologia científica clássica.
+        </p>
+      </div>
+
+      <div class="grid-2">
+        <div class="card navy">
+          <h3>Elementos da delimitação</h3>
+          <p><strong>Objeto de estudo:</strong> qual fenômeno, território, infraestrutura ou sistema está sendo avaliado?</p>
+          <p><strong>Recorte territorial:</strong> qual a unidade espacial de análise (município, região, corredor logístico)?</p>
+          <p><strong>Recorte temporal:</strong> qual o horizonte de análise e os dados disponíveis?</p>
+          <p><strong>Contexto institucional:</strong> em que política pública ou programa se insere a análise?</p>
+        </div>
+        <div class="card green">
+          <h3>Produto esperado</h3>
+          <p>
+            Ao final desta etapa, deve-se ter redigido um <strong>enunciado do problema</strong>
+            claro e conciso (1 a 3 frases), que informe qual atributo ou condição do objeto de
+            estudo se deseja mensurar, priorizar ou comparar, e em qual escala espacial e temporal.
+          </p>
+          <div class="info-box mt-2" style="margin-top:1rem;">
+            <div class="info-box-icon">✏️</div>
+            <p><strong>Exemplo:</strong> "Identificar a favorabilidade territorial dos municípios paulistas para o desenvolvimento de terminais logísticos intermodais no horizonte 2030–2050."</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         PASSO 2 — FORMULAR AS PERGUNTAS
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="passo2">
+      <div class="section-header">
+        <div class="section-number">2</div>
+        <div class="section-title-block">
+          <h2>Formular as Perguntas de Pesquisa</h2>
+          <p>Traduzir o problema em questões mensuráveis e orientadas a evidências</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="card blue">
+        <h3>Da problemática às perguntas de pesquisa</h3>
+        <p>
+          As perguntas de pesquisa são o elo entre o problema delimitado e os critérios a serem
+          avaliados. Cada pergunta deve ser <strong>específica, mensurável e respondível</strong>
+          com dados existentes ou coletáveis. Elas orientam a escolha dos critérios e evitam
+          redundâncias na matriz de comparação.
+        </p>
+      </div>
+
+      <div class="card navy mt-2">
+        <h3>Orientações para a formulação</h3>
+        <div class="step-flow">
+          <div style="display:flex; gap:1rem; margin-bottom:1rem; align-items:flex-start;">
+            <span class="pill" style="flex-shrink:0;">A</span>
+            <p style="margin:0;"><strong>Perguntas-guia gerais:</strong> Quais fatores determinam o fenômeno em análise? Como esses fatores se distribuem no território?</p>
+          </div>
+          <div style="display:flex; gap:1rem; margin-bottom:1rem; align-items:flex-start;">
+            <span class="pill" style="flex-shrink:0;">B</span>
+            <p style="margin:0;"><strong>Perguntas operacionais:</strong> Qual variável quantitativa ou qualitativa representa cada fator? Os dados estão disponíveis em nível adequado de desagregação?</p>
+          </div>
+          <div style="display:flex; gap:1rem; align-items:flex-start;">
+            <span class="pill" style="flex-shrink:0;">C</span>
+            <p style="margin:0;"><strong>Perguntas de relevância:</strong> Existe embasamento teórico ou empírico que justifique a inclusão de um fator? A literatura especializada e as fontes institucionais confirmam a relevância?</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box mt-2">
+        <div class="info-box-icon">💡</div>
+        <p>
+          <strong>Boa prática:</strong> Organize as perguntas em categorias temáticas (ex.: infraestrutura,
+          economia, governança, meio ambiente). Cada categoria se tornará, na etapa seguinte, um
+          subconjunto de critérios inter-relacionados, o que facilita a estruturação da hierarquia AHP.
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         PASSO 3 — IDENTIFICAR OS CRITÉRIOS
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="passo3">
+      <div class="section-header">
+        <div class="section-number">3</div>
+        <div class="section-title-block">
+          <h2>Identificar os Critérios de Análise</h2>
+          <p>Fatores relacionados ao objeto de estudo que responderão às perguntas de pesquisa</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="grid-2">
+        <div class="card blue">
+          <h3>O que é um critério?</h3>
+          <p>
+            Um critério é um <strong>fator de avaliação</strong> que influencia o objeto de estudo
+            de forma mensurável. No AHP, os critérios são os elementos que serão comparados
+            par a par pelos especialistas para gerar os pesos relativos. Devem ser:
+          </p>
+          <p>
+            ▸ <strong>Independentes:</strong> sem sobreposição conceitual entre si;<br />
+            ▸ <strong>Exaustivos:</strong> cobrindo todas as dimensões relevantes do problema;<br />
+            ▸ <strong>Operacionalizáveis:</strong> representáveis por variáveis e dados concretos.
+          </p>
+        </div>
+        <div class="card green">
+          <h3>Fontes de critérios</h3>
+          <p>
+            A identificação de critérios deve ser fundamentada em múltiplas fontes,
+            garantindo validade científica e alinhamento com as evidências disponíveis:
+          </p>
+          <p>
+            ▸ Revisão da literatura especializada (artigos, teses, relatórios técnicos);<br />
+            ▸ Normas, planos e políticas institucionais (PNLT, PDLogística, PLI-SP);<br />
+            ▸ Consulta a especialistas e partes interessadas (<em>stakeholders</em>);<br />
+            ▸ Análise de estudos de caso comparáveis.
+          </p>
+        </div>
+      </div>
+
+      <div class="card navy mt-2">
+        <h3>Critérios no contexto do PLI/SP-2050</h3>
+        <p>
+          Para análises no âmbito do Plano de Logística Integrada do Estado de São Paulo, os critérios
+          são tipicamente organizados em cinco dimensões temáticas, cada uma representando uma perspectiva
+          da favorabilidade territorial para logística:
+        </p>
+        <div class="grid-3 mt-2">
+          <div style="background:rgba(0,59,90,0.06); border-radius:8px; padding:1rem; border-top:3px solid var(--pli-deep);">
+            <strong style="color:var(--pli-deep);">Infraestrutura</strong>
+            <p style="font-size:0.85rem; margin-top:0.4rem; color:var(--pli-text-muted);">Rede viária, ferroviária, portuária, aeroportuária e de dutos; capacidade instalada e estado de conservação.</p>
+          </div>
+          <div style="background:rgba(17,101,147,0.06); border-radius:8px; padding:1rem; border-top:3px solid var(--pli-blue);">
+            <strong style="color:var(--pli-blue);">Socioeconômia</strong>
+            <p style="font-size:0.85rem; margin-top:0.4rem; color:var(--pli-text-muted);">PIB, emprego, renda, fluxo de cargas, valor adicionado por setor produtivo.</p>
+          </div>
+          <div style="background:rgba(62,194,110,0.06); border-radius:8px; padding:1rem; border-top:3px solid var(--pli-green);">
+            <strong style="color:var(--pli-green-dark);">Territorial</strong>
+            <p style="font-size:0.85rem; margin-top:0.4rem; color:var(--pli-text-muted);">Uso e cobertura do solo, aptidão fundiária, proximidade a centros geradores de carga.</p>
+          </div>
+          <div style="background:rgba(28,61,89,0.06); border-radius:8px; padding:1rem; border-top:3px solid var(--pli-navy);">
+            <strong style="color:var(--pli-navy);">Governança</strong>
+            <p style="font-size:0.85rem; margin-top:0.4rem; color:var(--pli-text-muted);">Capacidade institucional, arrecadação municipal, regularidade fundiária, legislação urbana.</p>
+          </div>
+          <div style="background:rgba(192,57,43,0.05); border-radius:8px; padding:1rem; border-top:3px solid #c0392b;">
+            <strong style="color:#c0392b;">Ambiental</strong>
+            <p style="font-size:0.85rem; margin-top:0.4rem; color:var(--pli-text-muted);">Restrições de uso, APPs, unidades de conservação, vulnerabilidade climática.</p>
+          </div>
+          <div style="background:rgba(243,156,18,0.06); border-radius:8px; padding:1rem; border-top:3px solid #f39c12;">
+            <strong style="color:#c87f00;">Conectividade</strong>
+            <p style="font-size:0.85rem; margin-top:0.4rem; color:var(--pli-text-muted);">Acessibilidade a portos, fronteiras, centros de distribuição e polos importadores/exportadores.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         PASSO 4 — TRANSFORMAR EM VARIÁVEIS
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="passo4">
+      <div class="section-header">
+        <div class="section-number">4</div>
+        <div class="section-title-block">
+          <h2>Transformar Critérios em Variáveis</h2>
+          <p>Operacionalização: da abstração ao dado mensurável</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="card blue">
+        <h3>Operacionalização de conceitos</h3>
+        <p>
+          <strong>Operacionalizar</strong> um critério significa identificar a medida empírica que
+          melhor represente o conceito teórico em análise. Trata-se de um dos passos mais críticos
+          do processo, pois uma escolha inadequada de variável pode gerar distorções nos pesos
+          finais e comprometer as conclusões.
+        </p>
+        <p>
+          A escolha da variável deve considerar: disponibilidade e qualidade dos dados,
+          escala de mensuração compatível com a unidade de análise, periodicidade adequada
+          ao horizonte temporal do estudo e alinhamento com o referencial bibliográfico.
+        </p>
+      </div>
+
+      <div class="grid-2 mt-2">
+        <div class="card navy">
+          <h3>Tipos de variáveis</h3>
+          <p><strong>Quantitativas contínuas:</strong> ex. distância em km, densidade de vias, valor do PIB por hectare.</p>
+          <p><strong>Quantitativas discretas:</strong> ex. número de terminais por município, contagem de estabelecimentos.</p>
+          <p><strong>Qualitativas ordinais:</strong> ex. classificação do estado de conservação de rodovias (bom / regular / ruim).</p>
+          <p><strong>Indicadores compostos:</strong> ex. IVS (Índice de Vulnerabilidade Social), IDHM, Índice de Gini.</p>
+        </div>
+        <div class="card green">
+          <h3>Normalização e padronização</h3>
+          <p>
+            Para que variáveis com diferentes unidades possam ser combinadas, é necessária
+            a normalização dos valores para uma escala comum (geralmente 0 a 1 ou 0 a 100).
+            Os métodos mais utilizados são:
+          </p>
+          <p>▸ <strong>Min-Max:</strong> escala os valores entre o mínimo e máximo observados;</p>
+          <p>▸ <strong>Z-score:</strong> padroniza com média zero e desvio-padrão 1;</p>
+          <p>▸ <strong>Escalonamento por quantil:</strong> divide a distribuição em classes iguais.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         PASSO 5 — MATRIZ DE PREMISSAS
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="passo5">
+      <div class="section-header">
+        <div class="section-number">5</div>
+        <div class="section-title-block">
+          <h2>Elaborar a Matriz de Premissas</h2>
+          <p>Instrumento de rastreabilidade metodológica e fundamentação científica</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="card blue">
+        <h3>O que é a Matriz de Premissas?</h3>
+        <p>
+          A Matriz de Premissas é um instrumento de <strong>rastreabilidade metodológica</strong>
+          que registra, de forma sistemática e transparente, a fundamentação teórica e empírica de
+          cada critério incluído na análise. Ela documenta a lógica de construção da análise
+          multicritério e viabiliza a sua revisão, auditoria e replicação por outros pesquisadores.
+        </p>
+        <p>
+          A matriz é composta por cinco colunas obrigatórias:
+          <strong>Premissa, Critério, Variável, Relação com o objeto de estudo</strong>
+          e <strong>Fonte / Referência bibliográfica</strong>.
+        </p>
+      </div>
+
+      <div class="grid-2 mt-2">
+        <div class="card navy">
+          <h3>Definição das colunas</h3>
+          <p><strong>PREMISSA:</strong> A proposição ou hipótese teórica que justifica a relevância do critério para o objeto de estudo.</p>
+          <p><strong>CRITÉRIO:</strong> O fator de avaliação identificado na etapa 3, expresso de forma concisa.</p>
+          <p><strong>VARIÁVEL:</strong> A medida empírica que operacionaliza o critério, conforme definido na etapa 4.</p>
+          <p><strong>RELAÇÃO:</strong> O sinal da relação entre a variável e o objeto (positiva = quanto maior a variável, mais favorável o objeto; negativa = quanto maior a variável, menos favorável).</p>
+          <p><strong>FONTE/REF:</strong> Referência bibliográfica ou institucional que fundamenta a premissa (ABNT/NBR 6023).</p>
+        </div>
+        <div class="card green">
+          <h3>Relação com o objeto de estudo</h3>
+          <p>
+            Identificar o sinal da relação é essencial para a etapa de normalização e para garantir
+            que maior valor da variável corresponda a <em>maior favorabilidade</em> (relação positiva)
+            ou a <em>menor favorabilidade</em> (relação negativa).
+          </p>
+          <div class="info-box mt-2" style="margin-top:1rem;">
+            <div class="info-box-icon">➕</div>
+            <p><strong>Positiva:</strong> Densidade de vias ↑ → favorabilidade ↑</p>
+          </div>
+          <div class="info-box mt-2" style="margin-top:0.75rem; background:rgba(192,57,43,0.06); border-color:rgba(192,57,43,0.25);">
+            <div class="info-box-icon">➖</div>
+            <p style="color:var(--pli-text);">
+              <strong style="color:#c0392b;">Negativa:</strong> Área em APP (restrição ambiental) ↑ → favorabilidade ↓
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABELA EXEMPLO -->
+      <div class="mt-2">
+        <h3 style="font-family:var(--pli-font-primary); color:var(--pli-deep); font-size:1rem; margin-bottom:1rem;">
+          Exemplo de Matriz de Premissas — Favorabilidade Territorial para Logística
+        </h3>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Premissa</th>
+                <th>Critério</th>
+                <th>Variável</th>
+                <th>Relação</th>
+                <th>Fonte / Referência</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Municípios com maior densidade de vias pavimentadas apresentam melhor acessibilidade logística e menores custos de transporte.</td>
+                <td>Densidade de infraestrutura viária</td>
+                <td>km de rodovias pavimentadas / área do município (km²) — DER/SP, 2023</td>
+                <td><span class="tag tag-pos">Positiva ↑</span></td>
+                <td>DAGANZO, C. F. <em>Logistics Systems Analysis</em>. Springer, 2005.</td>
+              </tr>
+              <tr>
+                <td>A geração e atração de cargas é correlacionada com a atividade econômica municipal, expressa pelo PIB do setor industrial e agroindustrial.</td>
+                <td>Potencial de geração de cargas</td>
+                <td>PIB industrial + agroindustrial per capita (R$/hab) — SEADE/IBGE, 2021</td>
+                <td><span class="tag tag-pos">Positiva ↑</span></td>
+                <td>BALLOU, R. H. <em>Gerenciamento da Cadeia de Suprimentos</em>. Bookman, 2006.</td>
+              </tr>
+              <tr>
+                <td>Restrições ambientais legais (APPs, UCs) limitam a disponibilidade de áreas para implantação de empreendimentos logísticos.</td>
+                <td>Restrição ambiental territorial</td>
+                <td>% da área municipal sob APPs e Unidades de Conservação — SMA/SP, 2022</td>
+                <td><span class="tag tag-neg">Negativa ↓</span></td>
+                <td>BRASIL. Lei Federal n.º 12.651/2012 (Código Florestal). Lei Federal n.º 9.985/2000 (SNUC).</td>
+              </tr>
+              <tr>
+                <td>A proximidade a portos secos, centros de distribuição e plataformas logísticas reduz distâncias de transbordo e amplia a atratividade territorial.</td>
+                <td>Conectividade a nós logísticos</td>
+                <td>Distância média ponderada (km) aos 10 principais terminais logísticos do Estado — ANTT/MTR, 2022</td>
+                <td><span class="tag tag-neg">Negativa ↓</span></td>
+                <td>MEERSMAN, H.; VAN DE VOORDE, E. <em>Freight Transport Modelling</em>. Emerald, 2013.</td>
+              </tr>
+              <tr>
+                <td>A capacidade fiscal e institucional do município está associada à sua capacidade de receber e sustentar investimentos em infraestrutura logística.</td>
+                <td>Capacidade institucional municipal</td>
+                <td>IFDM (Índice FIRJAN de Desenvolvimento Municipal) — edição mais recente disponível</td>
+                <td><span class="tag tag-pos">Positiva ↑</span></td>
+                <td>SISTEMA FIRJAN. Índice FIRJAN de Desenvolvimento Municipal. FIRJAN, 2023.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p style="font-size:0.78rem; color:var(--pli-text-muted); margin-top:0.5rem;">
+          Tabela ilustrativa. Os dados, fontes e critérios devem ser adaptados ao objeto de estudo específico de cada análise.
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         PASSO 6 — FERRAMENTA SIGMA-AHP
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="passo6">
+      <div class="section-header">
+        <div class="section-number green">6</div>
+        <div class="section-title-block">
+          <h2>Utilizar a Ferramenta SIGMA-AHP</h2>
+          <p>Cálculo automatizado dos pesos, índices de consistência e exportação de relatórios</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+
+      <div class="card blue">
+        <h3>O que é o SIGMA-AHP?</h3>
+        <p>
+          A ferramenta <strong>SIGMA-AHP</strong> é um módulo do Sistema Integrado de Gestão,
+          Monitoramento e Apoio Técnico ao PLI/SP-2050 que implementa o método AHP de Saaty
+          com processamento automático da matriz de comparações pareadas, cálculo do vetor de
+          prioridades (autovetores normalizados), Índice de Consistência (IC),
+          Índice Randômico (IR) e Razão de Consistência (RC), além de geração de gráficos
+          interativos e exportação de relatórios.
+        </p>
+      </div>
+
+      <div class="step-flow mt-2">
+
+        <div class="step-item">
+          <div class="step-line">
+            <div class="step-badge">①</div>
+          </div>
+          <div class="step-content">
+            <h3>Seleção e nomeação dos critérios</h3>
+            <p>Acesse a calculadora e informe o <strong>número de critérios</strong> (de 2 a 20) que compõem a análise. Em seguida, atribua <strong>nomes descritivos</strong> a cada critério, preferencialmente os mesmos da coluna "Critério" da Matriz de Premissas elaborada na etapa 5.</p>
+            <p><span class="pill">Validação em tempo real</span> O sistema verifica a consistência dos nomes e da quantidade.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-line">
+            <div class="step-badge">②</div>
+          </div>
+          <div class="step-content">
+            <h3>Escolha do método de entrada</h3>
+            <p>A ferramenta oferece dois modos de inserção das comparações: <strong>formulário par a par</strong> (guiado, recomendado para especialistas) ou <strong>upload de matriz</strong> (importação de CSV/JSON para análises já estruturadas ou originadas de consultas com múltiplos especialistas).</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-line">
+            <div class="step-badge">③</div>
+          </div>
+          <div class="step-content">
+            <h3>Comparação par a par (Escala de Saaty)</h3>
+            <p>Para cada par de critérios (i, j), o especialista atribui um valor de <strong>1 a 9</strong> da Escala Fundamental de Saaty, indicando a intensidade de importância do critério <em>i</em> em relação ao critério <em>j</em>. Os valores recíprocos (a<sub>ji</sub> = 1/a<sub>ij</sub>) são calculados automaticamente.</p>
+            <p>Uma matriz de <em>n</em> critérios exige <strong>n(n−1)/2 comparações</strong>. Para 5 critérios: 10 comparações; para 10 critérios: 45 comparações.</p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-line">
+            <div class="step-badge">④</div>
+          </div>
+          <div class="step-content">
+            <h3>Verificação da consistência</h3>
+            <p>
+              Após o preenchimento da matriz, a ferramenta calcula automaticamente:
+              o <strong>autovalor principal (λ<sub>max</sub>)</strong>, o
+              <strong>Índice de Consistência IC = (λ<sub>max</sub> − n) / (n − 1)</strong>,
+              o <strong>IR tabelado</strong> e a <strong>RC = IC / IR</strong>.
+            </p>
+            <p>
+              Se <strong>RC &lt; 0,10</strong>: a matriz é considerada consistente e os pesos são validados.
+              Se <strong>RC ≥ 0,10</strong>: a ferramenta sinaliza inconsistência e recomenda a revisão
+              dos julgamentos, indicando os pares com maior contribuição para a inconsistência.
+            </p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-line">
+            <div class="step-badge">⑤</div>
+          </div>
+          <div class="step-content">
+            <h3>Análise dos resultados e pesos</h3>
+            <p>
+              Com RC validado, a ferramenta exibe os <strong>pesos normalizados</strong> de cada critério
+              (soma = 1,0000), gráfico de barras com ranking de importância e tabela detalhada.
+              Esses pesos devem ser transferidos para a coluna correspondente na Matriz de Premissas,
+              documentando o processo decisório de forma rastreável.
+            </p>
+          </div>
+        </div>
+
+        <div class="step-item">
+          <div class="step-line">
+            <div class="step-badge" style="background:var(--pli-green-dark);">⑥</div>
+          </div>
+          <div class="step-content" style="border-left-color:var(--pli-green);">
+            <h3>Exportação do relatório</h3>
+            <p>
+              Os resultados podem ser exportados em <strong>PDF</strong> (relatório técnico completo),
+              <strong>CSV</strong> (para integração com análises espaciais em SIG) ou
+              <strong>XLSX</strong> (para composição de dashboards e relatórios executivos no SIGMA).
+            </p>
+            <p><span class="pill green">✓ Validação completa</span></p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FLUXO RESUMIDO -->
+      <div class="formula-box mt-2">
+        <div class="formula">λ<sub style="color:rgba(62,194,110,0.8);">max</sub> → IC = (λ<sub style="color:rgba(62,194,110,0.8);">max</sub> − n) / (n−1) → RC = IC / IR &lt; 0,10</div>
+        <div class="formula-label">Fluxo de validação matemática da consistência — SAATY (1980, 1990)</div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         REFERÊNCIAS
+    ════════════════════════════════════════════════════ -->
+    <section class="section" id="referencias">
+      <div class="section-header">
+        <div class="section-number">Ref</div>
+        <div class="section-title-block">
+          <h2>Referências Bibliográficas</h2>
+          <p>Fontes citadas e recomendadas para aprofundamento</p>
+        </div>
+      </div>
+      <div class="section-divider"></div>
+      <div class="card navy">
+        <p style="font-size:0.88rem; line-height:2; color:var(--pli-text);">
+          SAATY, Thomas L. <em>The Analytic Hierarchy Process: Planning, Priority Setting, Resource Allocation.</em> New York: McGraw-Hill, 1980.<br />
+          SAATY, Thomas L. How to make a decision: The analytic hierarchy process. <em>European Journal of Operational Research</em>, v. 48, n. 1, p. 9–26, 1990. DOI: <a href="https://www.sciencedirect.com/science/article/abs/pii/037722179090057I" style="color:var(--pli-blue);">10.1016/0377-2217(90)90057-I</a>.<br />
+          SAATY, Thomas L. Método de análisis jerarquico. <em>Behaviormetrika</em>, v. 18, n. 29, p. 1–35, 1991. DOI: <a href="https://link.springer.com/article/10.2333/bhmk.18.29_1" style="color:var(--pli-blue);">10.2333/bhmk.18.29_1</a>.<br />
+          SÃO PAULO (Estado). Secretaria de Meio Ambiente e Infraestrutura. <em>Plano de Logística Integrada do Estado de São Paulo — PLI/SP-2050.</em> São Paulo: SEMIL, 2023.<br />
+          BALLOU, Ronald H. <em>Gerenciamento da Cadeia de Suprimentos: Logística Empresarial.</em> 5. ed. Porto Alegre: Bookman, 2006.<br />
+          DAGANZO, Carlos F. <em>Logistics Systems Analysis.</em> 4. ed. Berlin: Springer, 2005.<br />
+          MEERSMAN, Hilde; VAN DE VOORDE, Eddy; VANELSLANDER, Thierry. <em>Freight Transport Modelling.</em> Bingley: Emerald, 2013.
+        </p>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════
+         CTA — FERRAMENTA
+    ════════════════════════════════════════════════════ -->
+    <div class="cta-section">
+      <h2>Acesse a Calculadora SIGMA-AHP</h2>
+      <p>
+        Com os critérios identificados, as variáveis operacionalizadas e a Matriz de Premissas
+        elaborada, você está pronto para utilizar a ferramenta e obter os pesos dos critérios.
+      </p>
+      <a href="https://vpcapanema.github.io/FAD-AHP_tool/sigma-ahp.html" class="btn-primary" target="_blank" rel="noopener noreferrer">
+        ▶ Acessar a Ferramenta AHP
+      </a>
+      <a href="#intro" class="btn-outline">
+        ↑ Voltar ao início
+      </a>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer>
+    <strong>SIGMA · Sistema Integrado de Gestão, Monitoramento e Apoio Técnico ao PLI/SP-2050</strong><br />
+    Secretaria de Meio Ambiente, Infraestrutura e Logística do Estado de São Paulo &nbsp;·&nbsp;
+    <a href="https://vpcapanema.github.io/FAD-AHP_tool/sigma-ahp.html" target="_blank" rel="noopener noreferrer">Ferramenta SIGMA-AHP</a>
+    &nbsp;·&nbsp; © 2025–2026 SIGMA. Todos os direitos reservados.
+  </footer>
+
+  <script>
+    // Ativa link da nav conforme scroll
+    const links = document.querySelectorAll('.section-nav a');
+    const sections = document.querySelectorAll('section[id]');
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute('id');
+          links.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -60% 0px', threshold: 0 });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+
+</body>
+</html>

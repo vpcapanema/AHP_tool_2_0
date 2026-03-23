@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AHP — Metodologia | SIGMA-PLI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── TOKENS ────────────────────────────────────────────── */
+    :root {
+      --deep:  #003b5a;
+      --navy:  #1c3d59;
+      --blue:  #116593;
+      --green: #3ec26e;
+      --gd:    #2aa358;
+      --black: #212529;
+      --gray1: #f5f7fa;
+      --gray2: #e9ecef;
+      --gray3: #dee2e6;
+      --gray4: #adb5bd;
+      --white: #ffffff;
+      --fh:    'Montserrat', sans-serif;
+      --fb:    'Roboto', sans-serif;
+    }
+
+    /* ─── RESET ─────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; }
+    body {
+      font-family: var(--fb);
+      color: var(--black);
+      background: #000;
+      overflow: hidden;
+    }
+
+    /* ─── DECK ──────────────────────────────────────────────── */
+    .deck {
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      scroll-behavior: smooth;
+    }
+    .deck::-webkit-scrollbar { display: none; }
+
+    /* ─── SLIDE BASE ────────────────────────────────────────── */
+    .slide {
+      height: 100vh;
+      width: 100vw;
+      scroll-snap-align: start;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .slide--white { background: var(--white); }
+    .slide--gray  { background: var(--gray1); }
+
+    /* ─── PROGRESS BAR ──────────────────────────────────────── */
+    #pb {
+      position: fixed; left: 0; top: 0;
+      width: 6px; height: 0%;
+      background: var(--green);
+      z-index: 200;
+      transition: height .3s;
+      border-radius: 0 3px 3px 0;
+    }
+
+    /* ─── NAV DOTS ──────────────────────────────────────────── */
+    #nav {
+      position: fixed; right: 18px; top: 50%;
+      transform: translateY(-50%);
+      display: flex; flex-direction: column; gap: 9px;
+      z-index: 200;
+    }
+    .dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all .22s;
+    }
+    .dot.active {
+      background: var(--deep);
+      border-color: var(--deep);
+      transform: scale(1.35);
+    }
+
+    /* ─── COUNTER ───────────────────────────────────────────── */
+    #ctr {
+      position: fixed; bottom: 18px; right: 44px;
+      font-family: var(--fh);
+      font-size: 0.72rem; font-weight: 600;
+      letter-spacing: 1.5px; color: var(--gray4);
+      z-index: 200;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       SLIDE 01 — CAPA
+    ═══════════════════════════════════════════════════════════ */
+    #s01 {
+      background: linear-gradient(145deg, #001e2f 0%, #003b5a 50%, #0a5378 100%);
+      justify-content: center;
+      padding: 0 10vw;
+    }
+    #s01 .tag {
+      display: inline-block;
+      background: rgba(62,194,110,.15);
+      border: 1.5px solid var(--green);
+      color: var(--green);
+      font-family: var(--fh);
+      font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 3px; text-transform: uppercase;
+      padding: 6px 18px; border-radius: 4px;
+      margin-bottom: 1.8rem;
+    }
+    #s01 .divider {
+      width: 70px; height: 4px;
+      background: var(--green); border-radius: 2px;
+      margin-bottom: 1.8rem;
+    }
+    #s01 h1 {
+      font-family: var(--fh);
+      font-size: clamp(3rem, 6vw, 5.5rem);
+      font-weight: 900; color: #fff;
+      line-height: 1.04; letter-spacing: -1.5px;
+      margin-bottom: .4rem;
+    }
+    #s01 h1 span { color: var(--green); }
+    #s01 .sub {
+      font-family: var(--fb); font-size: clamp(1.05rem, 1.7vw, 1.45rem);
+      font-weight: 300; color: rgba(255,255,255,.6);
+      max-width: 780px; line-height: 1.55;
+      margin-bottom: 2.5rem;
+    }
+    #s01 .meta {
+      display: flex; gap: 3rem; align-items: center;
+    }
+    #s01 .mi { display: flex; flex-direction: column; gap: 2px; }
+    #s01 .mi .lbl {
+      font-family: var(--fh); font-size: .65rem;
+      font-weight: 700; letter-spacing: 2.5px;
+      text-transform: uppercase; color: var(--green);
+    }
+    #s01 .mi .val {
+      font-family: var(--fh); font-size: .96rem;
+      font-weight: 600; color: rgba(255,255,255,.9);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       HEADER COMUM (s02–s08)
+    ═══════════════════════════════════════════════════════════ */
+    .sh {
+      display: flex; align-items: center; gap: 1.4rem;
+      padding: 1.8rem 8vw 1.4rem;
+      border-bottom: 3px solid var(--gray2);
+      background: inherit;
+      flex-shrink: 0;
+    }
+    .sh.accent { border-bottom-color: var(--green); }
+    .badge {
+      font-family: var(--fh);
+      font-size: clamp(2.5rem, 4.5vw, 4rem);
+      font-weight: 900; color: var(--gray2);
+      line-height: 1; min-width: 70px; text-align: right;
+      letter-spacing: -2px;
+    }
+    .badge.c { color: var(--green); }
+    .ht .slbl {
+      font-family: var(--fh); font-size: .7rem;
+      font-weight: 700; letter-spacing: 3px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: 2px;
+    }
+    .ht h2 {
+      font-family: var(--fh);
+      font-size: clamp(1.6rem, 2.8vw, 2.5rem);
+      font-weight: 800; color: var(--deep);
+      line-height: 1.12;
+    }
+    .ht h2 em { font-style: normal; color: var(--blue); }
+
+    /* ─── BODY COMUM ────────────────────────────────────────── */
+    .sb {
+      flex: 1;
+      padding: 1.8rem 8vw 1.4rem;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+    }
+
+    /* ─── PARÁGRAFO LEAD ────────────────────────────────────── */
+    .lead {
+      font-size: clamp(1.05rem, 1.5vw, 1.25rem);
+      line-height: 1.7; color: var(--black);
+    }
+    .lead strong { color: var(--deep); }
+
+    /* ─── BOX DESTAQUE ──────────────────────────────────────── */
+    .box {
+      background: #edf5fb;
+      border-left: 5px solid var(--blue);
+      border-radius: 0 10px 10px 0;
+      padding: 1.1rem 1.4rem;
+    }
+    .box.green-box {
+      background: #edf9f1;
+      border-left-color: var(--gd);
+    }
+    .box .blbl {
+      font-family: var(--fh); font-size: .7rem;
+      font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: .5rem;
+    }
+    .box p {
+      font-size: clamp(1rem, 1.4vw, 1.15rem);
+      line-height: 1.65; color: var(--navy);
+    }
+
+    /* ─── TABELA SAATY ──────────────────────────────────────── */
+    .t-saaty {
+      width: 100%; border-collapse: collapse;
+    }
+    .t-saaty thead tr { background: var(--deep); }
+    .t-saaty thead th {
+      font-family: var(--fh); font-weight: 700;
+      font-size: .95rem; color: #fff;
+      padding: 10px 14px; text-align: left;
+    }
+    .t-saaty tbody tr:nth-child(even) { background: var(--gray1); }
+    .t-saaty tbody td {
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--gray3);
+      font-size: clamp(.95rem, 1.3vw, 1.05rem);
+      line-height: 1.4; color: var(--black);
+    }
+    .t-saaty tbody td:first-child {
+      font-family: var(--fh); font-weight: 700;
+      font-size: 1.05rem; color: var(--deep);
+      text-align: center; width: 60px;
+    }
+
+    /* ─── CARDS ROW ─────────────────────────────────────────── */
+    .cards {
+      display: flex; flex-wrap: nowrap; gap: 1.1rem;
+    }
+    .card {
+      flex: 1;
+      background: var(--white);
+      border: 1.5px solid var(--gray3);
+      border-top: 4px solid var(--blue);
+      border-radius: 10px;
+      padding: 1.1rem 1.1rem .9rem;
+      display: flex; flex-direction: column; gap: .4rem;
+    }
+    .card.c-green { border-top-color: var(--gd); }
+    .card.c-deep  { border-top-color: var(--deep); }
+    .card .icon { font-size: 1.5rem; }
+    .card .cname {
+      font-family: var(--fh); font-size: .82rem;
+      font-weight: 700; text-transform: uppercase;
+      letter-spacing: .5px; color: var(--deep);
+    }
+    .card .cdesc {
+      font-size: clamp(.9rem, 1.2vw, 1rem);
+      color: var(--black); line-height: 1.45;
+    }
+
+    /* ─── STEPS LIST ────────────────────────────────────────── */
+    .steps {
+      display: flex; flex-direction: column; gap: 0;
+    }
+    .step {
+      display: flex; align-items: flex-start; gap: 1rem;
+    }
+    .step-conn {
+      display: flex; flex-direction: column; align-items: center;
+      flex-shrink: 0; width: 38px;
+    }
+    .step-circle {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--deep); color: #fff;
+      font-family: var(--fh); font-weight: 700; font-size: .9rem;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; z-index: 1;
+    }
+    .step-line {
+      width: 2px; flex: 1; min-height: 10px;
+      background: var(--gray3); margin: 0 auto;
+    }
+    .step-txt { padding-bottom: .9rem; }
+    .step-txt strong {
+      font-family: var(--fh); font-size: 1rem;
+      font-weight: 700; color: var(--deep);
+      display: block; margin-bottom: 2px;
+    }
+    .step-txt span {
+      font-size: clamp(.9rem, 1.2vw, 1rem);
+      color: var(--black); line-height: 1.45;
+    }
+
+    /* ─── FORMULA CARD ──────────────────────────────────────── */
+    .fcard {
+      background: var(--deep); border-radius: 12px;
+      padding: 1.3rem 1.5rem; color: #fff;
+    }
+    .fcard .ftitle {
+      font-family: var(--fh); font-size: .7rem;
+      font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: rgba(255,255,255,.55);
+      margin-bottom: .9rem;
+    }
+    .fsteps {
+      display: flex; align-items: center; gap: .7rem;
+      flex-wrap: wrap; margin-bottom: .8rem;
+    }
+    .fstep {
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      padding: 7px 12px;
+      font-family: 'Courier New', monospace;
+      font-size: clamp(.85rem, 1.1vw, .95rem);
+      color: rgba(255,255,255,.9); white-space: nowrap;
+    }
+    .farrow { color: var(--green); font-size: 1.1rem; font-weight: 700; }
+    .fresult {
+      display: block;
+      background: var(--green); color: #003b5a;
+      font-family: var(--fh); font-weight: 800;
+      font-size: .92rem; padding: 8px 14px;
+      border-radius: 6px; text-align: center;
+    }
+
+    /* ─── TABELA MATRIZ ─────────────────────────────────────── */
+    .t-matrix { width: 100%; border-collapse: collapse; }
+    .t-matrix thead tr { background: var(--deep); }
+    .t-matrix thead th {
+      font-family: var(--fh); font-weight: 700;
+      font-size: .82rem; letter-spacing: .8px;
+      text-transform: uppercase; color: #fff;
+      padding: 10px 13px; text-align: left;
+      border-right: 1px solid rgba(255,255,255,.15);
+    }
+    .t-matrix thead th:last-child { border-right: none; }
+    .t-matrix tbody tr:nth-child(even) { background: var(--gray1); }
+    .t-matrix tbody tr:hover { background: #e8f4fd; }
+    .t-matrix tbody td {
+      padding: 9px 13px;
+      border-bottom: 1px solid var(--gray3);
+      font-size: clamp(.9rem, 1.2vw, 1rem);
+      line-height: 1.45; color: var(--black);
+    }
+    .t-matrix tbody td:first-child {
+      font-family: var(--fh); font-weight: 700;
+      color: var(--deep); font-size: 1rem;
+    }
+    .rp {
+      display: inline-block; background: #d8f5e5;
+      color: #1a7a42; font-weight: 700; font-size: .8rem;
+      padding: 2px 8px; border-radius: 10px;
+    }
+    .rn {
+      display: inline-block; background: #fde8e8;
+      color: #a01c1c; font-weight: 700; font-size: .8rem;
+      padding: 2px 8px; border-radius: 10px;
+    }
+
+    /* ─── TAGS ──────────────────────────────────────────────── */
+    .tags { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: .8rem; }
+    .tg {
+      display: inline-block; background: var(--deep);
+      color: #fff; font-family: var(--fh);
+      font-size: .72rem; font-weight: 600;
+      padding: 4px 11px; border-radius: 20px;
+    }
+    .tg.g { background: var(--gd); }
+    .tg.b { background: var(--blue); }
+
+    /* ─── CTA ───────────────────────────────────────────────── */
+    .cta-box {
+      background: var(--gray1); border: 2px solid var(--green);
+      border-radius: 12px; padding: 1.3rem 1.5rem;
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 2rem;
+    }
+    .cta-box .ct {
+      font-family: var(--fh); font-size: .7rem;
+      font-weight: 700; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--blue);
+      margin-bottom: .3rem;
+    }
+    .cta-box p { font-size: 1rem; color: var(--black); line-height: 1.5; }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--deep); color: #fff;
+      font-family: var(--fh); font-size: .92rem;
+      font-weight: 700; letter-spacing: .5px;
+      padding: 11px 24px; border-radius: 7px;
+      text-decoration: none; white-space: nowrap;
+      transition: background .2s;
+      flex-shrink: 0;
+    }
+    .btn,
+    .btn:visited,
+    .btn:hover,
+    .btn:focus,
+    .btn:active {
+      color: #ffffff !important;
+    }
+    .btn:hover { background: var(--blue); }
+
+    /* ─── CHECKLIST ─────────────────────────────────────────── */
+    .chk { list-style: none; display: flex; flex-direction: column; gap: .8rem; }
+    .chk li {
+      display: flex; align-items: flex-start; gap: .9rem;
+      background: var(--white); border-radius: 9px;
+      padding: .85rem 1.1rem; border: 1.5px solid var(--gray3);
+    }
+    .slide--gray .chk li { background: var(--white); }
+    .chk .cn {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--deep); color: #fff;
+      font-family: var(--fh); font-weight: 800;
+      font-size: .88rem;
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    }
+    .chk .cc strong {
+      font-family: var(--fh); font-size: 1rem;
+      font-weight: 700; color: var(--deep);
+      display: block; margin-bottom: 2px;
+    }
+    .chk .cc span {
+      font-size: clamp(.92rem, 1.25vw, 1.05rem);
+      color: var(--black); line-height: 1.5;
+    }
+
+    /* ─── TABELA DE HIERARQUIZAÇÃO (slide 07) ───────────────── */
+    .t-rank { width: 100%; border-collapse: collapse; }
+    .t-rank thead tr { background: var(--deep); }
+    .t-rank thead th {
+      font-family: var(--fh); font-weight: 700;
+      font-size: .82rem; letter-spacing: .8px;
+      text-transform: uppercase; color: #fff;
+      padding: 10px 13px; text-align: left;
+    }
+    .t-rank tbody tr:nth-child(even) { background: #f0f7ff; }
+    .t-rank tbody tr:hover { background: #dbeeff; }
+    .t-rank tbody td {
+      padding: 9px 13px;
+      border-bottom: 1px solid var(--gray3);
+      font-size: clamp(.9rem, 1.2vw, 1rem);
+      line-height: 1.4; color: var(--black);
+    }
+    .t-rank tbody td:first-child {
+      font-family: var(--fh); font-weight: 800;
+      font-size: 1.1rem; color: var(--deep);
+      text-align: center; width: 50px;
+    }
+    .score-bar {
+      display: flex; align-items: center; gap: .6rem;
+    }
+    .bar-bg {
+      flex: 1; height: 10px; background: var(--gray2);
+      border-radius: 5px; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; background: var(--green); border-radius: 5px;
+    }
+    .score-val {
+      font-family: var(--fh); font-weight: 700;
+      font-size: .88rem; color: var(--deep);
+      min-width: 38px; text-align: right;
+    }
+    .priority-badge {
+      display: inline-block; font-family: var(--fh);
+      font-size: .72rem; font-weight: 700; letter-spacing: .5px;
+      padding: 3px 10px; border-radius: 10px;
+    }
+    .prio-a { background: #d8f5e5; color: #1a7a42; }
+    .prio-b { background: #fff4d1; color: #7a5a00; }
+    .prio-c { background: #fde8e8; color: #a01c1c; }
+
+  </style>
+</head>
+<body>
+  <div id="pb"></div>
+
+  <nav id="nav">
+    <div class="dot" data-i="0" title="Capa"></div>
+    <div class="dot" data-i="1" title="Introdução AHP"></div>
+    <div class="dot" data-i="2" title="Passo 1"></div>
+    <div class="dot" data-i="3" title="Passo 2"></div>
+    <div class="dot" data-i="4" title="Passo 3"></div>
+    <div class="dot" data-i="5" title="Passo 4"></div>
+    <div class="dot" data-i="6" title="Passo 5"></div>
+    <div class="dot" data-i="7" title="Passo 6"></div>
+    <div class="dot" data-i="8" title="Resultado D-11"></div>
+  </nav>
+
+  <div id="ctr">1 / 9</div>
+
+  <main class="deck" id="deck">
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 01 — CAPA
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide" id="s01">
+      <div class="tag">SIGMA-PLI · SP 2050</div>
+      <div class="divider"></div>
+      <h1>Processo Analítico<br>Hierárquico <span>AHP</span></h1>
+      <p class="sub">Metodologia de tomada de decisão multicritério aplicada à hierarquização de projetos de infraestrutura logística — Produto D-11 do Termo de Referência do PLI</p>
+      <div class="meta">
+        <div class="mi">
+          <span class="lbl">Programa</span>
+          <span class="val">PLI-SP 2050</span>
+        </div>
+        <div class="mi">
+          <span class="lbl">Produto</span>
+          <span class="val">D-11</span>
+        </div>
+        <div class="mi">
+          <span class="lbl">Ferramenta</span>
+          <span class="val">SIGMA-AHP</span>
+        </div>
+        <div class="mi">
+          <span class="lbl">Etapas</span>
+          <span class="val">6 passos</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 02 — INTRODUÇÃO AHP
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--white" id="s02">
+      <header class="sh accent">
+        <div class="badge">AHP</div>
+        <div class="ht">
+          <div class="slbl">Introdução à metodologia</div>
+          <h2>O que é o <em>Processo Analítico Hierárquico</em>?</h2>
+        </div>
+      </header>
+      <div class="sb">
+        <p class="lead">
+          O <strong>AHP (Analytic Hierarchy Process)</strong> é uma metodologia de decisão multicritério desenvolvida por Thomas Saaty (1980). Decompõe um problema complexo em critérios hierárquicos, comparados dois a dois para gerar <strong>pesos de importância relativa</strong>. No contexto do PLI-SP 2050, o AHP é utilizado para <strong>hierarquizar projetos de infraestrutura logística</strong> que serão priorizados no Produto D-11 do TR.
+        </p>
+        <table class="t-saaty">
+          <thead>
+            <tr>
+              <th>Valor</th>
+              <th>Julgamento</th>
+              <th>Definição prática</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Igual importância</td><td>Os dois critérios contribuem igualmente para a priorização do projeto</td></tr>
+            <tr><td>3</td><td>Moderadamente mais importante</td><td>Critério A tem leve vantagem sobre B na definição da prioridade</td></tr>
+            <tr><td>5</td><td>Fortemente mais importante</td><td>Critério A é determinante; B tem papel secundário</td></tr>
+            <tr><td>7</td><td>Muito fortemente mais importante</td><td>Critério A domina; B contribui pouco para a classificação</td></tr>
+            <tr><td>9</td><td>Extremamente mais importante</td><td>Diferença máxima — reservado a casos excepcionais</td></tr>
+            <tr><td>2,4,6,8</td><td>Valores intermediários</td><td>Compromisso entre dois julgamentos consecutivos</td></tr>
+          </tbody>
+        </table>
+        <div class="box green-box">
+          <div class="blbl">Razão de Consistência (RC)</div>
+          <p>A <strong>Razão de Consistência (RC &lt; 0,10)</strong> valida a coerência lógica dos julgamentos. Valores acima de 0,10 indicam contradições nos pesos atribuídos e exigem revisão antes de aplicar o ranqueamento de projetos.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 03 — PASSO 1: DELIMITAR
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--gray" id="s03">
+      <header class="sh">
+        <div class="badge c">01</div>
+        <div class="ht">
+          <div class="slbl">Passo 1 de 6</div>
+          <h2>Delimitar o <em>problema de decisão</em></h2>
+        </div>
+      </header>
+      <div class="sb">
+        <ul class="chk">
+          <li>
+            <div class="cn">A</div>
+            <div class="cc">
+              <strong>Objeto de estudo</strong>
+              <span>Hierarquização de projetos de infraestrutura logística a serem priorizados pelo PLI-SP 2050 — Produto D-11 do Termo de Referência.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">B</div>
+            <div class="cc">
+              <strong>Recorte territorial</strong>
+              <span>Estado de São Paulo — projetos distribuídos nos 645 municípios, avaliados no contexto regional de corredores logísticos prioritários.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">C</div>
+            <div class="cc">
+              <strong>Recorte temporal</strong>
+              <span>Dados de referência 2023; horizonte de planejamento de longo prazo (2035–2050), conforme TR do PLI.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">D</div>
+            <div class="cc">
+              <strong>Contexto institucional</strong>
+              <span>Plano de Logística Integrada do Estado de SP (PLI-SP 2050), coordenado pelo DER-SP, ARTESP e Secretaria de Logística e Transportes.</span>
+            </div>
+          </li>
+        </ul>
+        <div class="box">
+          <div class="blbl">Pergunta central do Produto D-11</div>
+          <p>"<strong>Quais projetos de infraestrutura logística</strong> devem ser priorizados pelo PLI-SP 2050, considerando critérios de impacto territorial, viabilidade técnica, potencial econômico e sustentabilidade ambiental?"</p>
+          <div class="tags">
+            <span class="tg">645 municípios SP</span>
+            <span class="tg b">Produto D-11</span>
+            <span class="tg g">PLI-SP 2050</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 04 — PASSO 2: PERGUNTAS-GUIA
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--white" id="s04">
+      <header class="sh">
+        <div class="badge c">02</div>
+        <div class="ht">
+          <div class="slbl">Passo 2 de 6</div>
+          <h2>Formular as <em>perguntas-guia</em> para hierarquização</h2>
+        </div>
+      </header>
+      <div class="sb">
+        <ul class="chk">
+          <li>
+            <div class="cn">1</div>
+            <div class="cc">
+              <strong>Qual critério mais diferencia os projetos do D-11?</strong>
+              <span>Impacto sobre corredores logísticos estaduais? Redução de custo de frete? Geração de empregos no entorno?</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">2</div>
+            <div class="cc">
+              <strong>O que torna um projeto "prioritário" no contexto do PLI?</strong>
+              <span>Alta abrangência territorial, complementaridade com projetos federais já financiados ou conexão com polos exportadores?</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">3</div>
+            <div class="cc">
+              <strong>Quais fatores podem inviabilizar ou penalizar um projeto?</strong>
+              <span>Passivo ambiental, baixa maturidade do projeto (nível de estudo), conflito fundiário ou ausência de licença prévia?</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">4</div>
+            <div class="cc">
+              <strong>Há restrições políticas ou orçamentárias que devem ser ponderadas?</strong>
+              <span>Capacidade de execução da Secretaria, existência de contrapartida federal ou parcerias público-privadas já estruturadas.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">5</div>
+            <div class="cc">
+              <strong>O resultado precisa ser defensável e auditável?</strong>
+              <span>Sim — o ranking D-11 é entregue como produto formal, devendo registrar todos os pesos, fontes e RC calculada.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 05 — PASSO 3: CRITÉRIOS
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--gray" id="s05">
+      <header class="sh">
+        <div class="badge c">03</div>
+        <div class="ht">
+          <div class="slbl">Passo 3 de 6</div>
+          <h2>Identificar os <em>critérios de avaliação</em> dos projetos</h2>
+        </div>
+      </header>
+      <div class="sb">
+        <p class="lead">
+          Para o Produto D-11, cada <strong>critério</strong> representa uma dimensão de valor que diferencia os projetos entre si. Deve ser <em>mensurável, independente e alinhado aos objetivos do PLI</em>.
+        </p>
+        <div class="cards">
+          <div class="card c-deep">
+            <div class="icon">🛣️</div>
+            <div class="cname">Impacto Viário</div>
+            <div class="cdesc">Extensão de rede beneficiada, redução de tempo de viagem e nível de serviço nos corredores afetados.</div>
+          </div>
+          <div class="card">
+            <div class="icon">📦</div>
+            <div class="cname">Potencial Econômico</div>
+            <div class="cdesc">Volume de carga movimentada, PIB regional influenciado e geração de empregos diretos e indiretos.</div>
+          </div>
+          <div class="card c-green">
+            <div class="icon">🌿</div>
+            <div class="cname">Sustentabilidade</div>
+            <div class="cdesc">Presença de APPs, compensações ambientais exigidas e conformidade com a Política Estadual de Meio Ambiente.</div>
+          </div>
+          <div class="card">
+            <div class="icon">📐</div>
+            <div class="cname">Maturidade Técnica</div>
+            <div class="cdesc">Nível de desenvolvimento do projeto: básico, anteprojeto, executivo ou obra em andamento.</div>
+          </div>
+          <div class="card c-deep">
+            <div class="icon">🏛️</div>
+            <div class="cname">Viabilidade Inst.</div>
+            <div class="cdesc">Existência de licenças, desapropriações concluídas, fonte de financiamento e parceiros envolvidos.</div>
+          </div>
+          <div class="card">
+            <div class="icon">🔗</div>
+            <div class="cname">Integração Modal</div>
+            <div class="cdesc">Conexão com ferrovias, hidrovias, portos e terminais intermodais já existentes ou previstos no PLI.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 06 — PASSO 4: VARIÁVEIS
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--white" id="s06">
+      <header class="sh">
+        <div class="badge c">04</div>
+        <div class="ht">
+          <div class="slbl">Passo 4 de 6</div>
+          <h2>Traduzir critérios em <em>variáveis mensuráveis</em></h2>
+        </div>
+      </header>
+      <div class="sb">
+        <ul class="chk">
+          <li>
+            <div class="cn">🛣️</div>
+            <div class="cc">
+              <strong>Impacto Viário</strong>
+              <span>km de rodovias estaduais melhoradas ou implantadas; TDM médio diário nos trechos afetados (VMD 2023, DER-SP).</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">📦</div>
+            <div class="cc">
+              <strong>Potencial Econômico</strong>
+              <span>PIB dos municípios da área de influência direta (SEADE 2023); volume de toneladas/ano estimado nos corredores (RAIS/ME).</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">🌿</div>
+            <div class="cc">
+              <strong>Sustentabilidade</strong>
+              <span>% da faixa de domínio sobreposta a APPs ou UCs (Lei 12.651/2012, SMA-SP); complexidade estimada do licenciamento ambiental.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">📐</div>
+            <div class="cc">
+              <strong>Maturidade Técnica</strong>
+              <span>Escala ordinal 1–5: (1) ideia/conceito → (3) anteprojeto → (5) projeto executivo aprovado. Fonte: banco D-11 DER-SP 2024.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">🏛️</div>
+            <div class="cc">
+              <strong>Viabilidade Inst.</strong>
+              <span>Binária ponderada: licença prévia (LP), fonte de financiamento confirmada, desapropriação iniciada — cada item vale 1/3 do indicador.</span>
+            </div>
+          </li>
+          <li>
+            <div class="cn">🔗</div>
+            <div class="cc">
+              <strong>Integração Modal</strong>
+              <span>Distância ao nó multimodal mais próximo (km) — relação negativa: quanto menor a distância, maior o score de integração.</span>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 07 — PASSO 5: MATRIZ DE PREMISSAS
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--gray" id="s07">
+      <header class="sh">
+        <div class="badge c">05</div>
+        <div class="ht">
+          <div class="slbl">Passo 5 de 6</div>
+          <h2>Construir a <em>matriz de premissas</em> dos projetos D-11</h2>
+        </div>
+      </header>
+      <div class="sb">
+        <table class="t-matrix">
+          <thead>
+            <tr>
+              <th>Premissa</th>
+              <th>Critério</th>
+              <th>Variável / Indicador</th>
+              <th>Relação</th>
+              <th>Fonte</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Projetos com maior tráfego diário nos trechos beneficiados têm maior impacto logístico</td>
+              <td>Impacto Viário</td>
+              <td>VMD (veículos/dia) nos eixos beneficiados</td>
+              <td><span class="rp">↑ Positiva</span></td>
+              <td>DER-SP, 2023</td>
+            </tr>
+            <tr>
+              <td>Maior PIB regional na área de influência significa mais retorno econômico ao investimento</td>
+              <td>Potencial Econômico</td>
+              <td>PIB municipal (R$ mil) — soma da área de influência</td>
+              <td><span class="rp">↑ Positiva</span></td>
+              <td>SEADE, 2023</td>
+            </tr>
+            <tr>
+              <td>Sobreposição com APAs e Unidades de Conservação eleva custo e risco de inviabilização</td>
+              <td>Sustentabilidade</td>
+              <td>% da faixa de domínio em áreas protegidas</td>
+              <td><span class="rn">↓ Negativa</span></td>
+              <td>SMA-SP / IBGE</td>
+            </tr>
+            <tr>
+              <td>Projetos com anteprojeto ou executivo aprovado têm menor risco de não-execução</td>
+              <td>Maturidade Técnica</td>
+              <td>Nível de maturidade 1–5 (escala ordinal)</td>
+              <td><span class="rp">↑ Positiva</span></td>
+              <td>DER-SP, 2024</td>
+            </tr>
+            <tr>
+              <td>Projetos licenciados e com financiamento confirmado têm maior chance de execução</td>
+              <td>Viabilidade Inst.</td>
+              <td>Índice composto LP + financiamento + desapropriação (0–1)</td>
+              <td><span class="rp">↑ Positiva</span></td>
+              <td>DER-SP / ARTESP</td>
+            </tr>
+            <tr>
+              <td>Proximidade a terminais intermodais amplia eficiência e rentabilidade do projeto</td>
+              <td>Integração Modal</td>
+              <td>Distância ao terminal intermodal mais próximo (km)</td>
+              <td><span class="rn">↓ Negativa</span></td>
+              <td>ANTT, 2023</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 08 — PASSO 6: FERRAMENTA SIGMA-AHP
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--white" id="s08">
+      <header class="sh accent">
+        <div class="badge c">06</div>
+        <div class="ht">
+          <div class="slbl">Passo 6 de 6</div>
+          <h2>Aplicar a ferramenta <em>SIGMA-AHP</em></h2>
+        </div>
+      </header>
+      <div class="sb">
+        <div class="steps">
+          <div class="step">
+            <div class="step-conn">
+              <div class="step-circle">1</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-txt">
+              <strong>Carregar critérios e variáveis</strong>
+              <span>Importe os critérios e variáveis definidos na Matriz de Premissas (Passo 5) diretamente no módulo SIGMA-AHP.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-conn">
+              <div class="step-circle">2</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-txt">
+              <strong>Realizar comparações pareadas</strong>
+              <span>Para cada par de critérios (i, j), atribua um valor da Escala de Saaty (1–9) indicando importância relativa no contexto D-11.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-conn">
+              <div class="step-circle">3</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-txt">
+              <strong>Verificar Razão de Consistência (RC)</strong>
+              <span>RC é calculada automaticamente. Se RC ≥ 0,10, a ferramenta indica quais julgamentos devem ser revistos.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-conn">
+              <div class="step-circle">4</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-txt">
+              <strong>Validar pesos com especialistas do PLI</strong>
+              <span>Pesos finais são submetidos à revisão técnica do DER-SP, ARTESP e Secretaria de Logística antes de aplicar o ranqueamento.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-conn">
+              <div class="step-circle">5</div>
+              <div class="step-line"></div>
+            </div>
+            <div class="step-txt">
+              <strong>Gerar ranking dos projetos D-11</strong>
+              <span>Os scores normalizados de cada projeto são multiplicados pelos pesos AHP e somados para produzir o índice de prioridade.</span>
+            </div>
+          </div>
+          <div class="step">
+            <div class="step-conn">
+              <div class="step-circle">6</div>
+            </div>
+            <div class="step-txt">
+              <strong>Exportar resultados para o SIGMA-PLI</strong>
+              <span>Tabela final em CSV/JSON com ranking, pesos, RC e fontes — integrada ao módulo de visualização do SIGMA-PLI.</span>
+            </div>
+          </div>
+        </div>
+        <div class="fcard">
+          <div class="ftitle">Cálculo da Razão de Consistência</div>
+          <div class="fsteps">
+            <div class="fstep">λmax</div>
+            <span class="farrow">→</span>
+            <div class="fstep">IC = (λmax − n) / (n−1)</div>
+            <span class="farrow">→</span>
+            <div class="fstep">RC = IC / IR</div>
+          </div>
+          <span class="fresult">RC &lt; 0,10 → pesos aprovados → ranqueamento dos projetos D-11 ✓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════════════════════════════
+         SLIDE 09 — RESULTADO: HIERARQUIZAÇÃO D-11
+    ══════════════════════════════════════════════════════ -->
+    <section class="slide slide--gray" id="s09">
+      <header class="sh accent">
+        <div class="badge c">D11</div>
+        <div class="ht">
+          <div class="slbl">Produto D-11 · PLI-SP 2050</div>
+          <h2>Resultado: <em>Hierarquização de Projetos</em> de Infraestrutura Logística</h2>
+        </div>
+      </header>
+      <div class="sb">
+        <table class="t-rank">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Projeto</th>
+              <th>Tipo</th>
+              <th>Score AHP</th>
+              <th>Prioridade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>Contorno Rodoviário de Campinas (SP-101 / SP-348)</td>
+              <td>Anel viário / rodovia</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:92%"></div></div>
+                  <span class="score-val">0,92</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-a">ALTA</span></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Terminal Intermodal de Sorocaba (ferrovia + rodovia)</td>
+              <td>Terminal / intermodalidade</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:85%"></div></div>
+                  <span class="score-val">0,85</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-a">ALTA</span></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Duplicação SP-270 Trecho Avaré–Ourinhos (Corredor Sul)</td>
+              <td>Rodovia estadual</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:78%"></div></div>
+                  <span class="score-val">0,78</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-a">ALTA</span></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Centro Logístico-Industrial de São José dos Campos (VCP)</td>
+              <td>Plataforma logística</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:71%"></div></div>
+                  <span class="score-val">0,71</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-b">MÉDIA</span></td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Requalificação SP-333 Acesso ao Porto Seco de Ribeirão Preto</td>
+              <td>Acesso portuário / rodovia</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:63%"></div></div>
+                  <span class="score-val">0,63</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-b">MÉDIA</span></td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Corredor SP-425 Zona Noroeste — Mato Grosso do Sul</td>
+              <td>Rodovia estadual</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:54%"></div></div>
+                  <span class="score-val">0,54</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-b">MÉDIA</span></td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Readequação de Acesso à ZPE de Presidente Epitácio</td>
+              <td>Zona aduaneira / acesso</td>
+              <td>
+                <div class="score-bar">
+                  <div class="bar-bg"><div class="bar-fill" style="width:41%"></div></div>
+                  <span class="score-val">0,41</span>
+                </div>
+              </td>
+              <td><span class="priority-badge prio-c">BAIXA</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="cta-box">
+          <div>
+            <div class="ct">Acesse a ferramenta</div>
+            <p>SIGMA-AHP disponível online — gere rankings auditáveis com RC validada, integrados ao SIGMA-PLI.</p>
+          </div>
+          <a class="btn" href="https://vpcapanema.github.io/FAD-AHP_tool/sigma-ahp.html" target="_blank" rel="noopener noreferrer">
+            Abrir SIGMA-AHP →
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    const deck  = document.getElementById('deck');
+    const dots  = document.querySelectorAll('.dot');
+    const ctr   = document.getElementById('ctr');
+    const pb    = document.getElementById('pb');
+    const slides = document.querySelectorAll('.slide');
+    const total  = slides.length;
+
+    function updateUI(idx) {
+      dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      ctr.textContent = `${idx + 1} / ${total}`;
+      pb.style.height = `${((idx + 1) / total) * 100}%`;
+    }
+
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          updateUI(Array.from(slides).indexOf(e.target));
+        }
+      });
+    }, { root: deck, threshold: 0.55 });
+
+    slides.forEach(s => obs.observe(s));
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => slides[i].scrollIntoView({ behavior: 'smooth' }));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      const idx = Array.from(dots).findIndex(d => d.classList.contains('active'));
+      if ((e.key === 'ArrowDown' || e.key === 'ArrowRight') && idx < total - 1) {
+        slides[idx + 1].scrollIntoView({ behavior: 'smooth' });
+      } else if ((e.key === 'ArrowUp' || e.key === 'ArrowLeft') && idx > 0) {
+        slides[idx - 1].scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+
+    updateUI(0);
+  </script>
+</body>
+</html>

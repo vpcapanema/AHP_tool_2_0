@@ -493,6 +493,21 @@ body.ahp-app a {
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
+body.ahp-app .c-btn,
+body.ahp-app a.c-btn,
+body.ahp-app button.c-btn,
+body.ahp-app .c-btn:visited,
+body.ahp-app .c-btn:hover,
+body.ahp-app .c-btn:focus,
+body.ahp-app .c-btn:active {
+  color: #ffffff !important;
+}
+
+body.ahp-app .c-btn i,
+body.ahp-app .c-btn span {
+  color: inherit !important;
+}
+
 .c-btn:hover {
   transform: translateY(-2px);
 }
