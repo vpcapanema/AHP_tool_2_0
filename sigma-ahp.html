@@ -4,46 +4,146 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIGMA - Calculadora AHP</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <link id="fontawesomeStylesheet" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" data-fallback-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
     <link rel="stylesheet" href="assets/govsp/css/top-padrao-govsp-v2.min.css">
     <link rel="stylesheet" href="assets/govsp/css/rodape-padrao-govsp.min.css">
+    <link rel="stylesheet" href="templates_modelo/style_global_reset_base.css">
+    <link rel="stylesheet" href="templates_modelo/style_template_base_aplicacao.css">
     <link rel="stylesheet" href="sigma-ahp.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="ahp-app vw-page preview-layout preview-sticky-footer">
-    <section class="govsp-topo">
-        <div id="govsp-topbarGlobal" class="blu-e">
-            <div id="topbarGlobal">
-                <div id="topbarLink" class="govsp-black"><div class="govsp-portal"><a href="https://www.saopaulo.sp.gov.br" title="Site Governo do Estado de Sao Paulo" target="_blank" rel="noopener noreferrer"><img src="assets/govsp/img/logo-governo-do-estado-sp.svg" alt="Logomarca Governo de Sao Paulo" class="logo"></a></div></div>
-                <nav class="govsp-navbar govsp-navbar-expand-lg">
-                    <a class="govsp-social" href="http://bit.ly/govspnozap" rel="noopener noreferrer" target="_blank" aria-label="Whatsapp Governo do Estado de SP" title="Whatsapp Governo do Estado de SP"><i class="fab fa-whatsapp govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.flickr.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Flickr Governo do Estado de SP" title="Flickr Governo do Estado de SP"><i class="fab fa-flickr govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.linkedin.com/company/governosp/" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn Governo do Estado de SP" title="LinkedIn Governo do Estado de SP"><i class="fab fa-linkedin-in govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.tiktok.com/@governosp" rel="noopener noreferrer" target="_blank" aria-label="TikTok Governo do Estado de SP" title="TikTok Governo do Estado de SP"><i class="fab fa-tiktok govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.youtube.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Youtube Governo do Estado de SP" title="Youtube Governo do Estado de SP"><i class="fab fa-youtube govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.twitter.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Twitter Governo do Estado de SP" title="Twitter Governo do Estado de SP"><i class="fab fa-x-twitter govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.instagram.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Instagram Governo do Estado de SP" title="Instagram Governo do Estado de SP"><i class="fab fa-instagram govsp-icon-social"></i></a>
-                    <a class="govsp-social" href="https://www.facebook.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Facebook Governo do Estado de SP" title="Facebook Governo do Estado de SP"><i class="fab fa-facebook-f govsp-icon-social"></i></a>
-                    <p class="govsp-social">/governosp</p>
-                </nav>
-            </div>
-            <button class="govsp-kebab" id="govsp-kebab" aria-expanded="false" aria-label="Menu de redes sociais"><i class="fas fa-ellipsis-v"></i></button>
-            <ul class="govsp-dropdown vs3" id="govsp-dropdown" aria-hidden="true">
-                <li><a class="govsp-social" role="button" href="http://bit.ly/govspnozap" rel="noopener noreferrer" target="_blank" aria-label="Whatsapp Governo do Estado de SP" title="Whatsapp Governo do Estado de SP"><i class="fab fa-whatsapp govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.flickr.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Flickr Governo do Estado de SP" title="Flickr Governo do Estado de SP"><i class="fab fa-flickr govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.linkedin.com/company/governosp/" rel="noopener noreferrer" target="_blank" aria-label="LinkedIn Governo do Estado de SP" title="LinkedIn Governo do Estado de SP"><i class="fab fa-linkedin-in govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.tiktok.com/@governosp" rel="noopener noreferrer" target="_blank" aria-label="TikTok Governo do Estado de SP" title="TikTok Governo do Estado de SP"><i class="fab fa-tiktok govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.twitter.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Twitter Governo do Estado de SP" title="Twitter Governo do Estado de SP"><i class="fab fa-x-twitter govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.youtube.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Youtube Governo do Estado de SP" title="Youtube Governo do Estado de SP"><i class="fab fa-youtube govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.instagram.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Instagram Governo do Estado de SP" title="Instagram Governo do Estado de SP"><i class="fab fa-instagram govsp-icon-social"></i></a></li>
-                <li><a class="govsp-social" role="button" href="https://www.facebook.com/governosp/" rel="noopener noreferrer" target="_blank" aria-label="Facebook Governo do Estado de SP" title="Facebook Governo do Estado de SP"><i class="fab fa-facebook-f govsp-icon-social"></i></a></li>
-                <li><p class="govsp-social">/governosp</p></li>
-            </ul>
+<body class="cadastro-page app-template-page ahp-app vw-page preview-sticky-footer">
+    <main class="sigma-main ahp-main">
+        <div class="cf-main ahp-shell">
+            <header class="vw-header">
+                <div class="vw-header__left">
+                    <nav class="vw-breadcrumb" aria-label="Breadcrumb">
+                        <a href="sigma-ahp.html">Início</a>
+                        <svg class="app-template-inline-icon app-template-inline-icon--crumb" viewBox="0 0 16 16" aria-hidden="true">
+                            <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-chevron-right"></use>
+                        </svg>
+                        <span>Calculadora AHP</span>
+                    </nav>
+                    <h1 class="vw-header__title">
+                        <i class="fas fa-diagram-project app-template-title-icon" aria-hidden="true"></i>
+                        Calculadora AHP
+                    </h1>
+                    <p class="vw-header__desc">Ferramenta de apoio multicritério para estruturar comparações pareadas, calcular pesos e verificar a consistência das decisões com base no método de Saaty.</p>
+                </div>
+            </header>
+
+            <p class="cf-info-note">
+                <svg class="app-template-inline-icon app-template-inline-icon--info" viewBox="0 0 20 20" aria-hidden="true">
+                    <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-info"></use>
+                </svg>
+                Esta página foi reorganizada sobre o template base padrão do módulo, mantendo o fluxo e os scripts originais da calculadora AHP.
+            </p>
+
+            <section class="cf-section">
+                <div class="cf-section__header">
+                    <svg class="app-template-inline-icon app-template-inline-icon--section" viewBox="0 0 20 20" aria-hidden="true">
+                        <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-compass"></use>
+                    </svg>
+                    <span>Visão Geral</span>
+                </div>
+                <div class="cf-section__body">
+                    <div class="app-template-summary-grid">
+                        <article class="app-template-summary-card">
+                            <div class="app-template-summary-card__icon">
+                                <svg class="app-template-inline-icon app-template-inline-icon--summary" viewBox="0 0 24 24" aria-hidden="true">
+                                    <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-landmark-outline"></use>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="app-template-summary-card__title"><i class="fas fa-sitemap app-template-card-title-icon" aria-hidden="true"></i><span>Fluxo orientado</span></h2>
+                                <p class="app-template-summary-card__text">O processo é dividido em etapas claras: definição dos critérios, nomeação, escolha do método, comparações e análise final.</p>
+                            </div>
+                        </article>
+                        <article class="app-template-summary-card">
+                            <div class="app-template-summary-card__icon">
+                                <svg class="app-template-inline-icon app-template-inline-icon--summary" viewBox="0 0 24 24" aria-hidden="true">
+                                    <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-network"></use>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="app-template-summary-card__title"><i class="fas fa-scale-balanced app-template-card-title-icon" aria-hidden="true"></i><span>Comparação pareada</span></h2>
+                                <p class="app-template-summary-card__text">Cada critério é comparado com os demais pela escala de importância do AHP, permitindo obter prioridades relativas de forma estruturada.</p>
+                            </div>
+                        </article>
+                        <article class="app-template-summary-card">
+                            <div class="app-template-summary-card__icon">
+                                <svg class="app-template-inline-icon app-template-inline-icon--summary" viewBox="0 0 24 24" aria-hidden="true">
+                                    <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-spacing"></use>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="app-template-summary-card__title"><i class="fas fa-file-export app-template-card-title-icon" aria-hidden="true"></i><span>Saída operacional</span></h2>
+                                <p class="app-template-summary-card__text">Ao final, a aplicação calcula os pesos, mede a razão de consistência e permite exportar os resultados para compartilhamento.</p>
+                            </div>
+                        </article>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cf-section">
+                <div class="cf-section__header">
+                    <svg class="app-template-inline-icon app-template-inline-icon--section" viewBox="0 0 20 20" aria-hidden="true">
+                        <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-sliders"></use>
+                    </svg>
+                    <span>Funcionalidades</span>
+                </div>
+                <div class="cf-section__body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-calculator"></i></div>
+                            <h3>Cálculo Automático</h3>
+                            <p>Processamento automático dos pesos e índices de consistência usando o método AHP de Saaty com validação matemática completa.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-chart-bar"></i></div>
+                            <h3>Visualização Gráfica</h3>
+                            <p>Gráficos e indicadores resumem os pesos dos critérios para acelerar a interpretação dos resultados e apoiar a comunicação técnica.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-file-export"></i></div>
+                            <h3>Exportação Múltipla</h3>
+                            <p>Resultados podem ser exportados em PDF, CSV, JSON ou XLSX para relatórios, auditoria e reaproveitamento em outras rotinas.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon"><i class="fas fa-tasks"></i></div>
+                            <h3>Interface Guiada</h3>
+                            <p>O preenchimento pode ser manual ou por upload de matriz, com progressão em etapas e validações de consistência ao longo do fluxo.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cf-section">
+                <div class="cf-section__header">
+                    <svg class="app-template-inline-icon app-template-inline-icon--section" viewBox="0 0 20 20" aria-hidden="true">
+                        <use href="templates_modelo/app_template_icon_sprite.svg#app-icon-layers"></use>
+                    </svg>
+                    <span>Fluxo do Processo</span>
+                </div>
+                <div class="cf-section__body">
+                    <div class="process-grid">
+                        <div class="process-card"><div class="process-number">1</div><h3>Seleção de Critérios</h3><p>Defina a quantidade de critérios que participarão da análise multicritério.</p></div>
+                        <div class="process-card"><div class="process-number">2</div><h3>Nomeação dos Critérios</h3><p>Atribua nomes claros e únicos para cada dimensão analisada.</p></div>
+                        <div class="process-card"><div class="process-number">3</div><h3>Escolha do Método</h3><p>Selecione entre matriz direta ou formulário assistido para realizar as comparações.</p></div>
+                        <div class="process-card"><div class="process-number">4</div><h3>Comparação Pareada</h3><p>Compare os critérios usando a escala de intensidade de Saaty e gere a matriz recíproca.</p></div>
+                        <div class="process-card"><div class="process-number">5</div><h3>Análise de Resultados</h3><p>Visualize pesos, índices de consistência, faixas percentuais e opções de exportação.</p></div>
+                    </div>
+                    <div class="welcome-actions">
+                        <a href="step1-criterios.html" class="c-btn c-btn--primary c-btn--lg"><i class="fas fa-play c-btn__icon"></i>Iniciar Calculadora AHP</a>
+                    </div>
+                </div>
+            </section>
         </div>
-    </section>
-    <header class="sigma-header sigma-header--public"><nav class="sigma-navbar"><div class="sigma-navbar__container"><a href="sigma-ahp.html" class="sigma-navbar__brand"><div class="sigma-navbar__brand-text"><span class="sigma-navbar__brand-title">SIGMA</span><span class="sigma-navbar__brand-subtitle">AHP Calculator</span></div></a><button class="sigma-navbar__toggle" type="button" aria-label="Abrir menu" aria-expanded="false"><span class="sigma-navbar__toggle-icon"><i class="fas fa-bars"></i></span></button><div class="sigma-navbar__menu" id="sigma-nav-menu"><ul class="sigma-navbar__nav"><li class="sigma-navbar__item"><a href="sigma-ahp.html" class="sigma-navbar__link sigma-navbar__link--active"><i class="fas fa-calculator"></i><span>Calculadora</span></a></li><li class="sigma-navbar__item"><a href="#" class="sigma-navbar__link"><i class="fas fa-circle-info"></i><span>Sobre</span></a></li><li class="sigma-navbar__item"><a href="#" class="sigma-navbar__link"><i class="fas fa-circle-question"></i><span>Ajuda</span></a></li></ul></div></div></nav></header>
-    <main class="ahp-main"><div class="ahp-shell"><section class="ahp-section"><h1 class="ahp-title">SIGMA</h1><p class="ahp-subtitle">Sistema Integrado de Gestão, Monitoramento e Apoio técnico ao PLI/SP-2050</p><p class="ahp-description">A Análise Hierárquica de Processo (AHP) é uma ferramenta de suporte à decisão baseada na análise multicritério. O método baseia-se na construção de uma matriz de comparações pareadas, onde os critérios são comparados par a par. A comparação é feita por meio da atribuição de valores de intensidade de importância com base em uma escala que varia de 1 a 9. Os valores de intensidade de importância são consolidados para calcular os pesos globais. A validação da comparação pareada é medida pela Razão de Consistência (RC) que mede a lógica da hierarquização (<a href="https://www.sciencedirect.com/science/article/abs/pii/037722179090057I" target="_blank" rel="noopener">SAATY, 1990</a>; <a href="https://link.springer.com/article/10.2333/bhmk.18.29_1" target="_blank" rel="noopener">1991</a>).</p></section><section class="ahp-section"><h2 class="section-title">Funcionalidades da Aplicação</h2><div class="features-grid"><div class="feature-card"><div class="feature-icon"><i class="fas fa-calculator"></i></div><h3>Cálculo Automático</h3><p>Processamento automático dos pesos e índices de consistência usando o método AHP de Saaty com validação matemática completa.</p></div><div class="feature-card"><div class="feature-icon"><i class="fas fa-chart-bar"></i></div><h3>Visualização Gráfica</h3><p>Gráficos interativos em tempo real para visualizar os pesos dos critérios e facilitar a interpretação dos resultados.</p></div><div class="feature-card"><div class="feature-icon"><i class="fas fa-file-export"></i></div><h3>Exportação Múltipla</h3><p>Exporte seus resultados em PDF, CSV ou XLSX para relatórios profissionais e análises posteriores.</p></div><div class="feature-card"><div class="feature-icon"><i class="fas fa-tasks"></i></div><h3>Interface Intuitiva</h3><p>Navegação por abas com controle sequencial, validação em tempo real e feedback visual do progresso.</p></div></div></section><section class="ahp-section"><h2 class="section-title">Fluxo do Processo</h2><div class="process-grid"><div class="process-card"><div class="process-number">1</div><h3>Seleção de Critérios</h3><p>Defina a quantidade de critérios (de 1 a 20) que serão comparados no processo de decisão multicritério.</p></div><div class="process-card"><div class="process-number">2</div><h3>Nomeação dos Critérios</h3><p>Atribua nomes descritivos e significativos para cada critério selecionado com validação em tempo real.</p></div><div class="process-card"><div class="process-number">3</div><h3>Escolha do Método</h3><p>Selecione entre matriz direta ou formulário para realizar as comparações pareadas de forma visual.</p></div><div class="process-card"><div class="process-number">4</div><h3>Comparação Pareada</h3><p>Compare os critérios par a par usando a escala de intensidade de Saaty (1 a 9) com cálculo automático de recíprocos.</p></div><div class="process-card"><div class="process-number">5</div><h3>Análise de Resultados</h3><p>Visualize pesos, índices de consistência, gráficos interativos e exporte relatórios completos da análise.</p></div></div><div class="welcome-actions"><a href="step1-criterios.html" class="c-btn c-btn--primary c-btn--lg"><i class="fas fa-play c-btn__icon"></i>Iniciar Calculadora AHP</a></div></section></div></main>
-    <div id="rodape-geral"><footer class="sigma-footer"><div class="sigma-footer__container"><p class="sigma-footer__copyright">&copy; 2025 SIGMA - Sistema Integrado de Gestão, Monitoramento e Apoio técnico ao PLI/SP-2050. Todos os direitos reservados.</p></div></footer><section id="govsp-rodape"><div class="container rodape"><div class="logo-rodape"><a href="https://www.saopaulo.sp.gov.br/" target="_blank" rel="noopener noreferrer"><img src="assets/govsp/img/logo-rodape-governo-do-estado-sp.svg" alt="Site do Governo de Sao Paulo" width="206" height="38"></a></div></div></section></div>
-    <script src="assets/govsp/js/script-top-v2.js"></script><script src="js/layout.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    </main>
+    <script src="assets/govsp/js/script-top-v2.js"></script>
+    <script src="templates_modelo/script_template_base_aplicacao.js"></script>
+    <script src="js/layout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>
 </html>

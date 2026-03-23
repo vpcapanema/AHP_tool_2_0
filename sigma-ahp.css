@@ -1,4 +1,4 @@
-@import url("./assets/css/style_global_reset_base.css");
+@import url("./templates_modelo/style_global_reset_base.css");
 @import url("./assets/css/components/style_navbar_public.css");
 @import url("./assets/css/components/style_govsp_bridge_transitions.css");
 
@@ -242,11 +242,12 @@ body.ahp-app a {
 .step-number,
 .process-number,
 .step-number-badge {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   width: 42px;
   height: 42px;
+  margin: 0 auto;
   border-radius: 50%;
   background: linear-gradient(135deg, var(--pli-green) 0%, var(--pli-blue) 100%);
   color: #ffffff;
@@ -256,21 +257,31 @@ body.ahp-app a {
 
 .info-card-header {
   display: flex;
+  flex-direction: column;
   align-items: center;
+  justify-content: center;
   gap: 14px;
   margin-bottom: 18px;
+  text-align: center;
 }
 
 .info-card-header i {
   width: 48px;
   height: 48px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(62, 194, 110, 0.18), rgba(17, 101, 147, 0.14));
   color: var(--pli-blue);
   font-size: 1.2rem;
+}
+
+.info-card-header h2,
+.info-card-header h3 {
+  width: 100%;
+  text-align: center;
 }
 
 .info-card-content,
@@ -288,17 +299,22 @@ body.ahp-app a {
 
 .info-item {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   gap: 14px;
   padding: 18px;
+  text-align: center;
 }
 
 .info-item i {
   width: 44px;
   height: 44px;
   flex: 0 0 44px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
+  margin: 0 auto;
   border-radius: 14px;
   background: rgba(62, 194, 110, 0.14);
   color: var(--pli-green-dark);
@@ -399,6 +415,7 @@ body.ahp-app a {
 .process-card,
 .method-option-card {
   padding: 22px;
+  text-align: center;
 }
 
 .feature-icon,
@@ -406,13 +423,34 @@ body.ahp-app a {
   width: 64px;
   height: 64px;
   border-radius: 18px;
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   background: linear-gradient(135deg, rgba(62, 194, 110, 0.18), rgba(17, 101, 147, 0.14));
   color: var(--pli-blue);
   font-size: 1.4rem;
-  margin-bottom: 16px;
+  margin: 0 auto 16px;
+}
+
+.method-option-header {
+  text-align: center;
+}
+
+.app-template-page .app-template-summary-card,
+.app-template-page .app-template-summary-card > div:last-child {
+  text-align: center;
+}
+
+.app-template-page .app-template-summary-card__icon {
+  display: flex;
+  margin: 4px auto 12px;
+}
+
+.app-template-page .app-template-summary-card__title {
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  white-space: nowrap;
 }
 
 .process-card {
@@ -450,6 +488,7 @@ body.ahp-app a {
   font-size: var(--font-size-sm);
   font-weight: 700;
   text-decoration: none;
+  color: #ffffff;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
@@ -466,13 +505,13 @@ body.ahp-app a {
 
 .c-btn--secondary {
   background: #e8edf2;
-  color: var(--pli-deep);
+  color: #ffffff;
 }
 
 .c-btn--outline {
   background: transparent;
   border: 1px solid rgba(17, 101, 147, 0.2);
-  color: var(--pli-blue);
+  color: #ffffff;
 }
 
 .c-btn--block {
