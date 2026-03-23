@@ -1,0 +1,325 @@
+/**
+ * SIGMA-PLI - Navbar Pública (100% Independente)
+ * CSS simplificado - SEM dependências externas
+ * Cor tema: var(--pli-blue)
+ */
+
+/* Accent local — herda do design system global */
+.sigma-header--public {
+  --_accent: var(--pli-blue);
+  --_accent-rgb: 17, 101, 147;
+}
+
+/* Header */
+.sigma-header--public {
+  position: fixed;
+  top: var(--govsp-topbar-height, 0px);
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 64px; /* Reduzido 20% de 80px */
+  background: #F2F2F2;
+  border-bottom: 1px solid #e0e0e0;
+  font-family: var(--font-family);
+}
+
+/* Container */
+.sigma-header--public .sigma-navbar {
+  height: 100%;
+}
+.sigma-header--public .sigma-navbar__container {
+  max-width: 1440px;
+  height: 100%;
+  margin: 0 auto;
+  margin-bottom: var(--navbar-total-offset);
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+/* Brand */
+.sigma-header--public .sigma-navbar__brand {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  text-decoration: none;
+}
+.sigma-header--public .sigma-navbar__brand-icon {
+  font-size: 1.5rem;
+  color: var(--pli-blue);
+}
+.sigma-header--public .sigma-navbar__brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.sigma-header--public .sigma-navbar__brand-title {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--dashboard-text);
+}
+.sigma-header--public .sigma-navbar__brand-subtitle {
+  font-size: var(--font-size-xs);
+  color: var(--dashboard-muted);
+}
+
+/* Toggle Mobile */
+.sigma-header--public .sigma-navbar__toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f5f5f5;
+  color: #212529;
+  cursor: pointer;
+}
+.sigma-header--public .sigma-navbar__toggle:hover {
+  background: rgba(var(--_accent-rgb), 0.2);
+}
+.sigma-header--public .sigma-navbar__toggle-icon {
+  font-size: var(--font-size-xl);
+}
+
+/* Menu */
+.sigma-header--public .sigma-navbar__menu {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex: 1;
+  justify-content: space-between;
+}
+.sigma-header--public .sigma-navbar__nav {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1;
+  justify-content: center;
+}
+.sigma-header--public .sigma-navbar__item {
+  position: relative;
+}
+
+/* Links */
+.sigma-header--public .sigma-navbar__link {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: #212529;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: 200ms ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.sigma-header--public .sigma-navbar__link i {
+  font-size: var(--font-size-sm);
+  color: var(--pli-green, #3ec26e);
+}
+.sigma-header--public .sigma-navbar__link:hover {
+  color: #212529;
+  background: rgba(28, 61, 89, 0.08);
+}
+.sigma-header--public .sigma-navbar__link--active {
+  color: #212529;
+  background: rgba(28, 61, 89, 0.1);
+}
+
+/* Dropdown */
+.sigma-header--public .sigma-navbar__item--dropdown {
+  position: relative;
+}
+.sigma-header--public .sigma-navbar__dropdown-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: #212529;
+  text-decoration: none;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: 200ms ease;
+  font-family: inherit;
+  white-space: nowrap;
+}
+.sigma-header--public .sigma-navbar__dropdown-toggle:hover {
+  color: #212529;
+  background: rgba(28, 61, 89, 0.08);
+}
+.sigma-header--public .sigma-navbar__dropdown-arrow {
+  font-size: 0.625rem;
+  order: -1;
+  margin-left: 0;
+  margin-right: 0.25rem;
+  color: var(--pli-green, #3ec26e);
+  transition: transform 200ms;
+}
+.sigma-header--public .sigma-navbar__item--open .sigma-navbar__dropdown-arrow {
+  transform: rotate(180deg);
+}
+.sigma-header--public .sigma-navbar__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 180px;
+  padding: 0.5rem;
+  background: #ffffff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(8px);
+  transition: all 200ms ease;
+  list-style: none;
+  margin: 0.5rem 0 0 0;
+  z-index: 100;
+}
+.sigma-header--public .sigma-navbar__item--open .sigma-navbar__dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.sigma-header--public .sigma-navbar__dropdown-link {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.625rem 1rem;
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  color: #212529;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: 200ms ease;
+}
+.sigma-header--public .sigma-navbar__dropdown-link i {
+  font-size: var(--font-size-sm);
+  color: var(--pli-green, #3ec26e);
+  width: 1rem;
+  text-align: center;
+}
+.sigma-header--public .sigma-navbar__dropdown-link:hover {
+  color: #212529;
+  background: rgba(28, 61, 89, 0.06);
+}
+
+/* Actions */
+.sigma-header--public .sigma-navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.sigma-header--public .sigma-navbar__btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: 200ms ease;
+  text-decoration: none;
+  font-family: inherit;
+}
+.sigma-header--public .sigma-navbar__btn--primary {
+  background: #d5d8dc;
+  color: var(--pli-deep, #003b5a);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+.sigma-header--public .sigma-navbar__btn--primary:hover {
+  background: #c0c4c8;
+  transform: translateY(-1px);
+}
+
+/* Responsivo */
+@media (max-width: 992px) {
+  .sigma-header--public .sigma-navbar__toggle {
+    display: flex;
+  }
+  .sigma-header--public .sigma-navbar__menu {
+    display: none;
+    position: fixed;
+    top: calc(var(--govsp-topbar-height, 0px) + 64px);
+    bottom: 0;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    padding: 1.25rem;
+    background: #ffffff;
+    border-bottom: 1px solid #e0e0e0;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    z-index: 1001;
+  }
+  .sigma-header--public .sigma-navbar__menu--open {
+    display: flex;
+  }
+  .sigma-header--public .sigma-navbar__nav {
+    flex-direction: column;
+    width: 100%;
+    gap: 0.5rem;
+  }
+  .sigma-header--public .sigma-navbar__link {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .sigma-header--public .sigma-navbar__actions {
+    width: 100%;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+  }
+  .sigma-header--public .sigma-navbar__btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+@media (max-width: 576px) {
+  .sigma-header--public .sigma-navbar__container {
+    padding: 0 1rem;
+  }
+  .sigma-header--public .sigma-navbar__brand-subtitle {
+    display: none;
+  }
+}
+
+/* Espaçamento do body - controlado pelo .sigma-main global */
+/* .has-navbar-public - REMOVIDO - usar .sigma-main */
+
+/* ══════════════════════════════════════════════════════════
+   FORCE OVERRIDE — cor da fonte var(--pli-deep, #003b5a) garantida
+   Bloqueia qualquer sobreposição do Bootstrap ou global CSS
+   ══════════════════════════════════════════════════════════ */
+.sigma-header--public .sigma-navbar__link,
+.sigma-header--public .sigma-navbar__link:hover,
+.sigma-header--public .sigma-navbar__link:focus,
+.sigma-header--public .sigma-navbar__link:visited,
+.sigma-header--public .sigma-navbar__link--active,
+.sigma-header--public .sigma-navbar__dropdown-toggle,
+.sigma-header--public .sigma-navbar__dropdown-toggle:hover,
+.sigma-header--public .sigma-navbar__dropdown-toggle:focus,
+.sigma-header--public .sigma-navbar__dropdown-link,
+.sigma-header--public .sigma-navbar__dropdown-link:hover,
+.sigma-header--public .sigma-navbar__dropdown-link:focus,
+.sigma-header--public .sigma-navbar__dropdown-link:visited {
+  color: var(--pli-deep, #003b5a) !important;
+}

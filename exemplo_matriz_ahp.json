@@ -1,0 +1,23 @@
+{
+  "criteria": [
+    "Custo",
+    "Qualidade",
+    "Tempo",
+    "Risco"
+  ],
+  "matrix": [
+    [1, 0.333, 0.5, 2],
+    [3, 1, 2, 5],
+    [2, 0.5, 1, 3],
+    [0.5, 0.2, 0.333, 1]
+  ],
+  "instructions": {
+    "step1": "Edite o array 'criteria' com os nomes dos seus critérios",
+    "step2": "Ajuste o tamanho da matriz 'matrix' conforme o número de critérios",
+    "step3": "Preencha a matriz usando a escala de Saaty (1-9)",
+    "scale": "1=Igual, 3=Moderado, 5=Forte, 7=Muito forte, 9=Extremo",
+    "note": "A diagonal principal deve sempre ser 1. Para cada par (i,j), o valor (j,i) será automaticamente calculado como 1/valor(i,j)",
+    "reciprocal": "A matriz deve ser recíproca: se matriz[i][j] = X, então matriz[j][i] = 1/X",
+    "format": "Use decimais para frações (ex: 1/3 = 0.333, 1/5 = 0.2, 1/9 = 0.111)"
+  }
+}

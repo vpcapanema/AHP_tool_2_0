@@ -1,0 +1,173 @@
+/**
+ * SIGMA-PLI — Gov SP + SIGMA Gradient Integration
+ * Os gradientes substituem diretamente o background da navbar e
+ * do footer SIGMA-PLI, criando continuidade visual com os
+ * componentes oficiais do Governo do Estado de SP.
+ *
+ * Paleta de referência (de style_global_reset_base.css):
+ *   --sigma-verde:   #3ec26e  (verde acento PLI)
+ *   --sigma-azul:    #1c3d59  (azul marinho PLI)
+ *   Gov SP Header: fundo branco (#fff)
+ *   Gov SP Footer barra inferior: preto (#000)
+ */
+
+/* =============================================================
+   OVERRIDE DE LAYOUT — Modo Preview Estático
+   Remove o position: fixed da navbar para visualização empilhada
+   Aplicar class "preview-layout" no <body> da página de preview
+   ============================================================= */
+.preview-layout {
+  padding-top: 0 !important;
+}
+
+.preview-layout .sigma-header--public {
+  position: static;
+  height: auto;
+  width: 100%;
+  border-bottom: none;
+}
+
+.preview-layout .sigma-header--public .sigma-navbar__container {
+  margin-bottom: 0;
+}
+
+/* =============================================================
+   SIGMA FOOTER — Gradiente como background
+   180° (topo → base): branco (conecta ao conteúdo da página)
+   → azul SIGMA → funde com o preto do container.rodape Gov SP
+   ============================================================= */
+.sigma-footer,
+.dashboard-footer {
+  background: linear-gradient(
+    180deg,
+    #ffffff  0%,
+    #2aa358 30%,
+    #1c3d59 65%,
+    #111111 100%
+  ) !important;
+  padding-top: 0.37rem !important;
+  padding-bottom: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+  width: 100% !important;
+}
+
+.sigma-footer .sigma-footer__container {
+  padding-top: 0.11rem !important;
+  padding-bottom: 0.4rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+.sigma-footer .sigma-footer__brand {
+  margin-bottom: 0.08rem !important;
+}
+
+.sigma-footer .sigma-footer__nav {
+  margin-bottom: 0.06rem !important;
+}
+
+.sigma-footer .sigma-footer__copyright {
+  padding-top: 0.08rem !important;
+}
+
+.sigma-footer .sigma-footer__logo {
+  color: #ffffff;
+}
+
+.sigma-footer .sigma-footer__tagline,
+.sigma-footer .sigma-footer__link {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.sigma-footer .sigma-footer__link:hover {
+  color: #ffffff;
+}
+
+.sigma-footer .sigma-footer__copyright {
+  color: rgba(255, 255, 255, 0.5);
+  border-top-color: rgba(255, 255, 255, 0.15);
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important;
+}
+
+/* Remove margin-top automático e min-height do Gov SP */
+#govsp-rodape {
+  min-height: unset !important;
+  height: 2.4rem !important;
+  overflow: hidden;
+  width: 100% !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  padding-top: 0 !important;
+  margin-top: 0 !important;
+}
+
+#govsp-rodape .container.rodape {
+  margin-top: 0 !important;
+  height: auto !important;
+  padding-top: 0.09rem !important;
+  padding-bottom: 0.09rem !important;
+  padding-left: 1rem !important;
+  padding-right: 1rem !important;
+  max-width: 100% !important;
+  width: 100% !important;
+  display: flex;
+  align-items: center;
+}
+
+#govsp-rodape .logo-rodape img {
+  height: 32px !important;
+  width: auto !important;
+}
+
+/* Cabeçalho Gov SP — logo sem atributo height inline */
+.govsp-portal img.logo {
+  height: 38px;
+  width: auto;
+}
+
+/* =============================================================
+   STICKY FOOTER — #rodape-geral sempre na base da página
+   Technique: flexbox column no body + flex-grow no main content
+   ============================================================= */
+.preview-sticky-footer {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.preview-sticky-footer .preview-main-content {
+  flex: 1 0 auto;
+}
+
+#rodape-geral {
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: auto;
+  height: auto;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =============================================================
+   ÁREA DE CONTEÚDO — placeholder do preview
+   ============================================================= */
+.preview-main-content {
+  min-height: 40vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--pli-gray-bg, #f0f0f1);
+  font-family: var(--pli-font-secondary, "Roboto", sans-serif);
+  color: var(--pli-text-muted, #444444);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+}
