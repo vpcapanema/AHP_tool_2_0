@@ -10,9 +10,16 @@
     <link rel="stylesheet" href="templates_modelo/style_global_reset_base.css">
     <link rel="stylesheet" href="templates_modelo/style_template_base_aplicacao.css">
     <link rel="stylesheet" href="sigma-ahp.css">
+    <style>
+        .ahp-home-footer-buffer {
+            height: clamp(96px, 14vh, 160px);
+            flex: 0 0 auto;
+        }
+    </style>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="cadastro-page app-template-page ahp-app vw-page preview-sticky-footer">
+    <div id="cabecalho-fragment-anchor"></div>
     <main class="sigma-main ahp-main">
         <div class="cf-main ahp-shell">
             <header class="vw-header">
@@ -139,10 +146,54 @@
                 </div>
             </section>
         </div>
+        <div class="ahp-home-footer-buffer" aria-hidden="true"></div>
     </main>
+    <script>
+        (function () {
+            function injectCabecalho() {
+                var anchor = document.getElementById('cabecalho-fragment-anchor');
+                if (!anchor) {
+                    return;
+                }
+
+                fetch('cabecalho_fragment.html', { cache: 'no-store' })
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Falha ao carregar cabecalho_fragment.html');
+                        }
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        var template = document.createElement('template');
+                        template.innerHTML = html;
+
+                        template.content.querySelectorAll('script').forEach(function (oldScript) {
+                            var newScript = document.createElement('script');
+
+                            Array.prototype.forEach.call(oldScript.attributes, function (attribute) {
+                                newScript.setAttribute(attribute.name, attribute.value);
+                            });
+
+                            newScript.textContent = oldScript.textContent;
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+
+                        anchor.replaceWith(template.content);
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectCabecalho);
+            } else {
+                injectCabecalho();
+            }
+        }());
+    </script>
     <script src="assets/govsp/js/script-top-v2.js"></script>
     <script src="templates_modelo/script_template_base_aplicacao.js"></script>
-    <script src="js/layout.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </body>

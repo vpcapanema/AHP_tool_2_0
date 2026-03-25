@@ -12,6 +12,11 @@
   --ahp-radius: 22px;
   --ahp-radius-sm: 14px;
   --ahp-page-width: min(1360px, calc(100vw - 32px));
+  --ahp-footer-clearance: clamp(96px, 12vh, 152px);
+  /* Aliases para variáveis legadas usadas em scripts inline */
+  --pli-azul-escuro: var(--pli-deep);
+  --pli-azul-principal: var(--pli-blue);
+  --pli-verde-principal: var(--pli-green);
 }
 
 * {
@@ -35,6 +40,50 @@ body.ahp-app {
 
 body.ahp-app a {
   color: var(--pli-blue);
+}
+
+body.ahp-app.preview-sticky-footer .ahp-main {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+body.ahp-app .sigma-cabecalho-espacador {
+  height: var(--sigma-cabecalho-offset, 0px) !important;
+}
+
+body.ahp-app.preview-sticky-footer .ahp-shell {
+  padding-bottom: var(--ahp-footer-clearance);
+}
+
+/* ── Cards: centralização responsiva ── */
+body.ahp-app .app-template-summary-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+body.ahp-app .app-template-summary-card {
+  flex: 1 1 clamp(200px, 28%, 340px);
+}
+
+body.ahp-app .features-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+body.ahp-app .feature-card {
+  flex: 1 1 clamp(180px, 22%, 280px);
+}
+
+body.ahp-app .process-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+body.ahp-app .process-card {
+  flex: 1 1 clamp(150px, 18%, 230px);
 }
 
 .sigma-header--public .sigma-navbar__brand {
@@ -508,6 +557,26 @@ body.ahp-app .c-btn span {
   color: inherit !important;
 }
 
+body.ahp-app .c-btn--secondary,
+body.ahp-app a.c-btn--secondary,
+body.ahp-app button.c-btn--secondary,
+body.ahp-app .c-btn--secondary:visited,
+body.ahp-app .c-btn--secondary:hover,
+body.ahp-app .c-btn--secondary:focus,
+body.ahp-app .c-btn--secondary:active {
+  color: var(--pli-deep) !important;
+}
+
+body.ahp-app .c-btn--outline,
+body.ahp-app a.c-btn--outline,
+body.ahp-app button.c-btn--outline,
+body.ahp-app .c-btn--outline:visited,
+body.ahp-app .c-btn--outline:hover,
+body.ahp-app .c-btn--outline:focus,
+body.ahp-app .c-btn--outline:active {
+  color: var(--pli-blue) !important;
+}
+
 .c-btn:hover {
   transform: translateY(-2px);
 }
@@ -520,13 +589,13 @@ body.ahp-app .c-btn span {
 
 .c-btn--secondary {
   background: #e8edf2;
-  color: #ffffff;
+  color: var(--pli-deep);
 }
 
 .c-btn--outline {
   background: transparent;
-  border: 1px solid rgba(17, 101, 147, 0.2);
-  color: #ffffff;
+  border: 1px solid rgba(17, 101, 147, 0.45);
+  color: var(--pli-blue);
 }
 
 .c-btn--block {

@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="sigma-ahp.css">
 </head>
 <body class="cadastro-page app-template-page ahp-app vw-page preview-sticky-footer">
+    <div id="cabecalho-fragment-anchor"></div>
     <main class="sigma-main ahp-main">
         <div class="cf-main ahp-shell">
             <header class="vw-header">
@@ -47,6 +48,49 @@
             </section>
         </div>
     </main>
-    <script src="assets/govsp/js/script-top-v2.js"></script><script src="templates_modelo/script_template_base_aplicacao.js"></script><script src="js/layout.js"></script><script src="js/script.js"></script><script>document.addEventListener('DOMContentLoaded',function(){const count=localStorage.getItem('ahp_criteriaCount');if(!count||count<1){alert('Número de critérios não encontrado. Redirecionando para a Etapa 1.');window.location.href='step1-criterios.html';return;}const container=document.getElementById('criteriaInputs');const savedCriteria=JSON.parse(localStorage.getItem('ahp_criteria')||'[]');for(let i=1;i<=count;i++){const formGroup=document.createElement('div');formGroup.className='c-form-group';const label=document.createElement('label');label.className='c-form-label';label.setAttribute('for',`criteria${i}`);label.innerHTML=`<i class="fas fa-tag"></i> Critério ${i}`;const input=document.createElement('input');input.type='text';input.id=`criteria${i}`;input.name=`criteria${i}`;input.className='c-form-control';input.placeholder=`Digite o nome do critério ${i}`;input.value=savedCriteria[i-1]||'';input.required=true;const helpText=document.createElement('small');helpText.className='form-help';helpText.innerHTML='<i class="fas fa-info-circle"></i> Use um nome descritivo e específico';formGroup.appendChild(label);formGroup.appendChild(input);formGroup.appendChild(helpText);container.appendChild(formGroup);}});function processCriteriaNames(){const count=parseInt(localStorage.getItem('ahp_criteriaCount'),10);const criteria=[];let valid=true;for(let i=1;i<=count;i++){const input=document.getElementById(`criteria${i}`);const value=input.value.trim();if(!value){input.style.borderColor='var(--pli-error)';valid=false;}else{input.style.borderColor='';criteria.push(value);}}if(!valid){alert('Por favor, preencha todos os nomes dos critérios.');return;}const duplicates=criteria.filter((name,index)=>criteria.indexOf(name)!==index);if(duplicates.length>0){alert('Atenção: Há critérios com nomes duplicados. Use nomes únicos para cada critério.');return;}localStorage.setItem('ahp_criteria',JSON.stringify(criteria));window.location.href='step3-metodo.html';}</script>
+    <script>
+        (function () {
+            function injectCabecalho() {
+                var anchor = document.getElementById('cabecalho-fragment-anchor');
+                if (!anchor) {
+                    return;
+                }
+
+                fetch('cabecalho_fragment.html', { cache: 'no-store' })
+                    .then(function (response) {
+                        if (!response.ok) {
+                            throw new Error('Falha ao carregar cabecalho_fragment.html');
+                        }
+                        return response.text();
+                    })
+                    .then(function (html) {
+                        var template = document.createElement('template');
+                        template.innerHTML = html;
+
+                        template.content.querySelectorAll('script').forEach(function (oldScript) {
+                            var newScript = document.createElement('script');
+
+                            Array.prototype.forEach.call(oldScript.attributes, function (attribute) {
+                                newScript.setAttribute(attribute.name, attribute.value);
+                            });
+
+                            newScript.textContent = oldScript.textContent;
+                            oldScript.parentNode.replaceChild(newScript, oldScript);
+                        });
+
+                        anchor.replaceWith(template.content);
+                    })
+                    .catch(function (error) {
+                        console.error(error);
+                    });
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', injectCabecalho);
+            } else {
+                injectCabecalho();
+            }
+        }());
+    </script><script src="assets/govsp/js/script-top-v2.js"></script><script src="templates_modelo/script_template_base_aplicacao.js"></script><script src="js/script.js"></script><script>document.addEventListener('DOMContentLoaded',function(){const count=localStorage.getItem('ahp_criteriaCount');if(!count||count<1){alert('Número de critérios não encontrado. Redirecionando para a Etapa 1.');window.location.href='step1-criterios.html';return;}const container=document.getElementById('criteriaInputs');const savedCriteria=JSON.parse(localStorage.getItem('ahp_criteria')||'[]');for(let i=1;i<=count;i++){const formGroup=document.createElement('div');formGroup.className='c-form-group';const label=document.createElement('label');label.className='c-form-label';label.setAttribute('for',`criteria${i}`);label.innerHTML=`<i class="fas fa-tag"></i> Critério ${i}`;const input=document.createElement('input');input.type='text';input.id=`criteria${i}`;input.name=`criteria${i}`;input.className='c-form-control';input.placeholder=`Digite o nome do critério ${i}`;input.value=savedCriteria[i-1]||'';input.required=true;const helpText=document.createElement('small');helpText.className='form-help';helpText.innerHTML='<i class="fas fa-info-circle"></i> Use um nome descritivo e específico';formGroup.appendChild(label);formGroup.appendChild(input);formGroup.appendChild(helpText);container.appendChild(formGroup);}});function processCriteriaNames(){const count=parseInt(localStorage.getItem('ahp_criteriaCount'),10);const criteria=[];let valid=true;for(let i=1;i<=count;i++){const input=document.getElementById(`criteria${i}`);const value=input.value.trim();if(!value){input.style.borderColor='var(--pli-error)';valid=false;}else{input.style.borderColor='';criteria.push(value);}}if(!valid){alert('Por favor, preencha todos os nomes dos critérios.');return;}const duplicates=criteria.filter((name,index)=>criteria.indexOf(name)!==index);if(duplicates.length>0){alert('Atenção: Há critérios com nomes duplicados. Use nomes únicos para cada critério.');return;}localStorage.setItem('ahp_criteria',JSON.stringify(criteria));window.location.href='step3-metodo.html';}</script>
 </body>
 </html>
