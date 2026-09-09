@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Glossário — Calculadora AHP</title>
+<link rel="stylesheet" href="templates_modelo/style_global_reset_base.css">
+<link rel="stylesheet" href="templates_modelo/style_template_base_aplicacao.css">
+<link rel="stylesheet" href="assets/css/components/style_navbar_public.css">
+<link rel="stylesheet" href="sigma-ahp.css">
+<style>body.glossary-page {font-family:var(--pli-font-primary);background:var(--sigma-page-background,#eef1f5);}</style>
+<style>
+.glossary { --gl-primary:var(--pli-deep,#003b5a);--gl-accent:var(--pli-green,#3ec26e);--gl-text:var(--pli-text-main,#263746);--gl-surface:white;--gl-border:var(--pli-border,#d5dce6);--gl-radius:var(--pli-radius-md,8px); }
+
+/* Componentes do glossário: cores e fontes vêm do tema da aplicação. */
+body.glossary-page { display:block; width:auto; height:auto; min-height:100vh; overflow:auto; margin:0; padding:0; }
+.glossary { box-sizing:border-box; width:calc(100% - 2rem); max-width:1120px; margin:2rem auto; padding:0; line-height:1.65; color:var(--gl-text); }
+.glossary *, .glossary *::before, .glossary *::after { box-sizing:border-box; }
+.glossary .gl-heading { padding:1.5rem 0; margin:0 0 1.5rem; border-bottom:3px solid var(--gl-accent); background:none; text-align:left; }
+.glossary .gl-brand { margin:0 0 .5rem; color:var(--gl-primary); font-weight:700; letter-spacing:.04em; }
+.glossary h1 { color:var(--gl-primary); font-size:clamp(1.6rem,4vw,2.25rem); line-height:1.2; margin:.5rem 0 1rem; text-align:left; }
+.glossary h2 { color:var(--gl-primary); font-size:1.15rem; line-height:1.4; margin:0 0 1rem; padding:0; border:0; text-align:left; }
+.glossary a { color:var(--gl-primary); text-decoration:underline; text-underline-offset:3px; }
+.glossary .gl-layout { display:grid; grid-template-columns:260px minmax(0,1fr); gap:1.5rem; align-items:start; }
+.glossary .gl-sidebar { position:sticky; top:1rem; background:var(--gl-surface); border:1px solid var(--gl-border); border-radius:var(--gl-radius); padding:1rem; min-width:0; }
+.glossary .gl-search { margin:0 0 1rem; display:block; }
+.glossary label { display:block; font-weight:600; margin:0 0 .5rem; }
+.glossary input { display:block; width:100%; min-height:44px; padding:.6rem; font:inherit; border:1px solid var(--gl-border); border-radius:4px; background:var(--gl-surface); color:var(--gl-text); }
+.glossary button { min-height:44px; padding:.5rem .8rem; margin:.6rem 0; font:inherit; cursor:pointer; background:var(--gl-primary); color:white; border:0; border-radius:4px; }
+.glossary .gl-count { font-size:.9em; margin:0; }
+.glossary summary { cursor:pointer; font-weight:700; color:var(--gl-primary); padding:.5rem 0; }
+.glossary .gl-index { max-height:50vh; overflow:auto; background:none; position:static; display:block; padding:0; margin:0; }
+.glossary .gl-index a { display:block; padding:.3rem 0; font-size:.9em; }
+.glossary .gl-group { padding:1.4rem; margin:0 0 1.25rem; background:var(--gl-surface); border:1px solid var(--gl-border); border-top:3px solid var(--gl-accent); border-radius:var(--gl-radius); box-shadow:none; }
+.glossary dl { margin:0; }
+.glossary .gl-entry { padding:1rem 0; border-top:1px solid var(--gl-border); scroll-margin-top:1.5rem; overflow-wrap:anywhere; }
+.glossary dt { font-weight:700; margin:0 0 .4rem; }
+.glossary dd { margin:0; text-align:left; }
+.glossary .gl-entry:target { outline:2px solid var(--gl-primary); outline-offset:6px; }
+.glossary :focus-visible { outline:3px solid var(--gl-primary); outline-offset:3px; }
+.glossary [hidden] { display:none !important; }
+.glossary .gl-note { font-size:.9em; margin:1.5rem 0; }
+@media(max-width:760px) { .glossary .gl-layout { grid-template-columns:minmax(0,1fr); } .glossary .gl-sidebar { position:static; } .glossary .gl-index { max-height:180px; } .glossary .gl-group { padding:1rem; } }
+@media print { .glossary .gl-sidebar, .glossary .gl-back { display:none; } .glossary .gl-layout { display:block; } .glossary .gl-entry { break-inside:avoid; } }
+
+</style>
+</head>
+<body class="glossary-page">
+<main class="glossary" id="glossario">
+  <header class="gl-heading">
+    <p class="gl-brand">Calculadora AHP</p>
+    <a class="gl-back" href="sigma-ahp.html">← Voltar à aplicação</a>
+    <h1>Glossário técnico-conceitual</h1>
+    <p>Termos e conceitos para compreender e utilizar Calculadora AHP.</p>
+  </header>
+  <div class="gl-layout">
+    <aside class="gl-sidebar" aria-label="Consulta ao glossário">
+      <form class="gl-search" role="search" hidden>
+        <label for="gl-search">Buscar termo ou conceito</label>
+        <input id="gl-search" type="search" autocomplete="off" aria-controls="gl-content">
+        <button type="reset">Limpar busca</button>
+        <p class="gl-count" role="status" aria-live="polite"></p>
+      </form>
+      <details open><summary>Índice de termos</summary><nav class="gl-index" aria-label="Termos"><a data-term="termo-ahp-analytic-hierarchy-process" href="#termo-ahp-analytic-hierarchy-process">AHP — Analytic Hierarchy Process</a> <a data-term="termo-criterio" href="#termo-criterio">Critério</a> <a data-term="termo-comparacao-pareada" href="#termo-comparacao-pareada">Comparação pareada</a> <a data-term="termo-escala-de-saaty" href="#termo-escala-de-saaty">Escala de Saaty</a> <a data-term="termo-reciprocidade" href="#termo-reciprocidade">Reciprocidade</a> <a data-term="termo-matriz-de-comparacao" href="#termo-matriz-de-comparacao">Matriz de comparação</a> <a data-term="termo-diagonal-principal" href="#termo-diagonal-principal">Diagonal principal</a> <a data-term="termo-vetor-de-prioridades" href="#termo-vetor-de-prioridades">Vetor de prioridades</a> <a data-term="termo-peso-normalizado" href="#termo-peso-normalizado">Peso normalizado</a> <a data-term="termo-lambda-maximo-max" href="#termo-lambda-maximo-max">Lambda máximo (λmax)</a> <a data-term="termo-indice-de-consistencia-ci" href="#termo-indice-de-consistencia-ci">Índice de consistência (CI)</a> <a data-term="termo-indice-aleatorio-ri" href="#termo-indice-aleatorio-ri">Índice aleatório (RI)</a> <a data-term="termo-razao-de-consistencia-cr" href="#termo-razao-de-consistencia-cr">Razão de consistência (CR)</a> <a data-term="termo-consistencia" href="#termo-consistencia">Consistência</a> <a data-term="termo-upload-de-matriz" href="#termo-upload-de-matriz">Upload de matriz</a> <a data-term="termo-exportacao-de-resultados" href="#termo-exportacao-de-resultados">Exportação de resultados</a></nav></details>
+    </aside>
+    <div id="gl-content">
+      <p class="gl-empty" hidden>Nenhum termo encontrado. Tente outra palavra ou limpe a busca.</p>
+      <section class="gl-group"><h2>Estrutura e julgamentos</h2><dl>
+<div class="gl-entry" id="termo-ahp-analytic-hierarchy-process" tabindex="-1"><dt><a href="#termo-ahp-analytic-hierarchy-process">AHP — Analytic Hierarchy Process</a></dt><dd>Método de análise hierárquica que usa comparações pareadas para obter prioridades relativas e verificar a consistência dos julgamentos.</dd></div>
+<div class="gl-entry" id="termo-criterio" tabindex="-1"><dt><a href="#termo-criterio">Critério</a></dt><dd>Aspecto cuja importância relativa será comparada com a dos demais critérios.</dd></div>
+<div class="gl-entry" id="termo-comparacao-pareada" tabindex="-1"><dt><a href="#termo-comparacao-pareada">Comparação pareada</a></dt><dd>Julgamento entre dois critérios por vez, sob a mesma referência de decisão.</dd></div>
+<div class="gl-entry" id="termo-escala-de-saaty" tabindex="-1"><dt><a href="#termo-escala-de-saaty">Escala de Saaty</a></dt><dd>Escala de intensidade de importância usada nas comparações, com igualdade em 1 e intensidades crescentes até 9, além dos recíprocos.</dd></div>
+<div class="gl-entry" id="termo-reciprocidade" tabindex="-1"><dt><a href="#termo-reciprocidade">Reciprocidade</a></dt><dd>Propriedade segundo a qual, se a comparação de A com B vale x, a comparação de B com A vale 1/x.</dd></div>
+<div class="gl-entry" id="termo-matriz-de-comparacao" tabindex="-1"><dt><a href="#termo-matriz-de-comparacao">Matriz de comparação</a></dt><dd>Tabela quadrada que reúne os julgamentos entre todos os pares de critérios.</dd></div>
+<div class="gl-entry" id="termo-diagonal-principal" tabindex="-1"><dt><a href="#termo-diagonal-principal">Diagonal principal</a></dt><dd>Células que comparam cada critério consigo mesmo e, por isso, recebem valor 1.</dd></div>
+</dl></section><section class="gl-group"><h2>Pesos e consistência</h2><dl>
+<div class="gl-entry" id="termo-vetor-de-prioridades" tabindex="-1"><dt><a href="#termo-vetor-de-prioridades">Vetor de prioridades</a></dt><dd>Conjunto de pesos calculados a partir da matriz de comparação.</dd></div>
+<div class="gl-entry" id="termo-peso-normalizado" tabindex="-1"><dt><a href="#termo-peso-normalizado">Peso normalizado</a></dt><dd>Prioridade relativa expressa em escala cuja soma, para o conjunto comparado, é 1.</dd></div>
+<div class="gl-entry" id="termo-lambda-maximo-max" tabindex="-1"><dt><a href="#termo-lambda-maximo-max">Lambda máximo (λmax)</a></dt><dd>Valor associado à matriz no cálculo de consistência. Em uma matriz perfeitamente consistente, coincide com sua dimensão n.</dd></div>
+<div class="gl-entry" id="termo-indice-de-consistencia-ci" tabindex="-1"><dt><a href="#termo-indice-de-consistencia-ci">Índice de consistência (CI)</a></dt><dd>Medida calculada por (λmax − n)/(n − 1), para n maior que 1, utilizada na avaliação dos julgamentos.</dd></div>
+<div class="gl-entry" id="termo-indice-aleatorio-ri" tabindex="-1"><dt><a href="#termo-indice-aleatorio-ri">Índice aleatório (RI)</a></dt><dd>Referência por dimensão da matriz utilizada no cálculo da razão de consistência.</dd></div>
+<div class="gl-entry" id="termo-razao-de-consistencia-cr" tabindex="-1"><dt><a href="#termo-razao-de-consistencia-cr">Razão de consistência (CR)</a></dt><dd>Relação entre CI e RI, quando RI é positivo. Expressa a coerência interna dos julgamentos.</dd></div>
+<div class="gl-entry" id="termo-consistencia" tabindex="-1"><dt><a href="#termo-consistencia">Consistência</a></dt><dd>Coerência interna das comparações. Não comprova, por si só, que os critérios escolhidos sejam adequados ao problema.</dd></div>
+</dl></section><section class="gl-group"><h2>Entrada e saída</h2><dl>
+<div class="gl-entry" id="termo-upload-de-matriz" tabindex="-1"><dt><a href="#termo-upload-de-matriz">Upload de matriz</a></dt><dd>Importação de comparações previamente preenchidas, sujeitas às validações da calculadora.</dd></div>
+<div class="gl-entry" id="termo-exportacao-de-resultados" tabindex="-1"><dt><a href="#termo-exportacao-de-resultados">Exportação de resultados</a></dt><dd>Geração de arquivo com os resultados da análise para registro e compartilhamento.</dd></div>
+</dl></section>
+      <p class="gl-note">As definições contextualizam os termos utilizados nesta aplicação. Leia os resultados junto dos filtros, unidades, períodos e regras apresentados em cada tela.</p>
+      <a href="#glossario">Voltar ao início ↑</a>
+    </div>
+  </div>
+</main>
+<script>
+
+(() => {
+  const root = document.querySelector('.glossary');
+  if (!root) return;
+  const form = root.querySelector('.gl-search');
+  const input = root.querySelector('#gl-search');
+  const normalize = value => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase('pt-BR');
+  const entries = Array.from(root.querySelectorAll('.gl-entry'), element => ({ element, text: normalize(element.textContent), link: root.querySelector('[data-term="' + element.id + '"]') }));
+  const filter = () => {
+    const words = normalize(input.value).trim().split(/\s+/).filter(Boolean);
+    let visible = 0;
+    entries.forEach(({element, text, link}) => { const match = words.every(word => text.includes(word)); element.hidden = !match; link.hidden = !match; if(match) visible++; });
+    root.querySelectorAll('.gl-group').forEach(group => { group.hidden = !group.querySelector('.gl-entry:not([hidden])'); });
+    root.querySelector('.gl-count').textContent = visible + ' de ' + entries.length + ' termos';
+    root.querySelector('.gl-empty').hidden = visible !== 0;
+  };
+  const reveal = () => {
+    let id; try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+    const target = document.getElementById(id);
+    if (!target || !root.contains(target)) return;
+    if (target.closest('[hidden]')) { input.value = ''; filter(); }
+    target.scrollIntoView({block:'start'});
+  };
+  form.addEventListener('submit', event => event.preventDefault());
+  form.addEventListener('reset', event => { event.preventDefault(); input.value = ''; filter(); input.focus(); });
+  input.addEventListener('input', filter);
+  window.addEventListener('hashchange', reveal);
+  form.hidden = false; filter(); reveal();
+})();
+
+</script>
+</body>
+</html>
